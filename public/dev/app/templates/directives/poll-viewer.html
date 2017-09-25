@@ -1,0 +1,38 @@
+<div class="row">
+    <table class="table noborder">
+        <tbody>
+            <tr ng-repeat="choice in data.options">
+                <td class="td-nb" width="90%">
+                    <span bs-tooltip data-container="body" data-title="{{data.voters[$index]}}" html="true">{{choice}}: {{data.values[$index]}} {{getPercent(data.values[$index])}}</span>
+                    <div class="progress progress-sm">
+                      <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="{{getValue(data.values[$index])}}"></div>
+                    </div>
+              </td>
+              <td class="td-nb">
+                <button ng-show='zoom==0' class="btn btn-xxs" ng-class="myIndex==$index ? 'btn-default' : 'btn-white' " style="margin-top:17px; height: 22px" ng-click='voteClick($index)'><i class="fa fa-check"></i></button>
+              </td>
+          </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+            <td class="td-nb">
+                <a ng-show='data.allow_add && !editing' href="javascript:void(0)" ng-click="addOptionClick()">{{'ADD_AN_OPTION' | translate}}</a>
+                <div class="input-group" ng-show='data.allow_add && editing'>
+                    <input  class="form-control" autofocus ng-model='newOption' placeholder="{{'NEW_OPTION' | translate}}">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click='okClick()'>
+                            <i class="fa fa-check"></i>
+                        </button>
+                          <button type="button" class="btn btn-default" ng-click='cancelClick()'>
+                              <i class="fa fa-times"></i>
+                          </button>
+                    </span>
+                </div>
+            </td>
+            <td class="td-nb">
+                &nbsp;
+            </td>
+        </tr>
+      </tfoot>
+  </table>
+</div>

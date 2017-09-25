@@ -1,0 +1,86 @@
+<fieldset>
+    <div class="form-group">
+        <label class="col-md-2 control-label"><strong>{{label}}</strong></label>
+        <div class="col-md-6" ng-show="edit.editing || edit.formMode">
+            <!-- text -->
+            parent:{{$parent.value}}
+            this {{field}}
+
+            <div class="input-group" ng-if="type=='text'">
+
+                <!--<input ng-model="edit.value" ng-keypress="error = ''" type="text" placeholder="{{placeholder}}" class="form-control input-md">-->
+
+                <input ng-model="field" class="form-control input-md">
+
+                <span class="input-group-btn" ng-if="formMode != 'true'">
+                    <button type="button" class="btn btn-default" ng-click='okClick()'><i class="fa fa-check"></i></button>
+                    <button type="button" class="btn btn-default" ng-click='edit.editing=false'><i class="fa fa-times"></i></button>
+                </span>
+            </div>
+
+            <!-- textarea -->
+            <div ng-if="type=='textarea'">
+                <textarea ng-model="edit.value" rows="4" ng-keypress="error = ''" type="text" placeholder="{{placeholder}}" class="form-control input-md"></textarea>
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click='okClick()'><i class="fa fa-check"></i></button>
+                    <button type="button" class="btn btn-default" ng-click='edit.editing=false'><i class="fa fa-times"></i></button>
+                </div>
+            </div>
+
+            <!-- radio -->
+            <div class="btn-group" ng-if="type=='radio'">
+                <button class="btn btn-xs" ng-repeat="radio in radioValues"
+                        ng-class="radio.id==originalValue ? 'btn-info' : 'btn-white' "
+                        ng-click="radioClick(radio.id)">
+                    <i ng-if="radio.icon" class='fa' ng-class="radio.icon"></i>
+                    {{radio.caption}}
+                </button>
+            </div>
+
+            <!-- date -->
+            <div class="input-group  col-md-4" ng-if="type=='date'">
+                <div class="input-group" ng-class="{'has-error': datepickerForm.date.$invalid}">
+                    <input type="text" autoclose='true' class="form-control" ng-model="edit.value" name="date" bs-datepicker>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click='okClick()'><i class="fa fa-check"></i></button>
+                        <button type="button" class="btn btn-default" ng-click='edit.editing=false'><i class="fa fa-times"></i></button>
+                    </span>
+                </div>
+            </div>
+            <div class="input-group  col-md-10" ng-if="type=='users'">
+                <tags-input ng-model="edit.value" display-property="full_name" placeholder = 'Users' replace-spaces-with-dashes="false">
+                    <auto-complete source="loadUsers($query)"></auto-complete>
+                </tags-input>
+
+                <span class="input-group-btn">
+                    <div>
+                        <button type="button" class="btn btn-default" ng-click='okClick()'><i class="fa fa-check"></i></button>
+                        <button type="button" class="btn btn-default" ng-click='edit.editing=false'><i class="fa fa-times"></i></button>
+                    </div>
+                </span>
+            </div>
+
+            <span class="inline-error">{{error}}</span>
+        </div>
+
+
+
+
+
+        <label class="col-md-6 control-label field-editor-value" ng-show="!edit.editing && type !== 'radio'">
+            <a ng-show='allowEdit' ng-click="editClick()" ng-class="originalValue.length==0 ? 'field-placeholder': '' ">{{originalValue || placeholder}}</a>
+
+            <span ng-hide="allowEdit">{{originalValue}}</span>
+
+        </label>
+
+        <label class="col-md-6 control-label field-editor-value"  ng-show="!edit.editing && type == 'radio'">
+            <a  ng-click="editClick()" style="position: relative; top: 0px;">
+                <i ng-if="radioValues[originalValue].icon" class='fa' ng-class="radioValues[originalValue].icon"></i>
+                {{radioValues[originalValue].caption || placeholder}}
+            </a>
+            <!--<span ng-hide="allowEdit">{{originalValue}}</span>-->
+        </label>
+
+    </div>
+</fieldset>

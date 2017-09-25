@@ -1,0 +1,23 @@
+<div class="popover" style="width: 500px">
+    <div class="arrow"></div>
+    <h3 class="popover-title" ng-bind="title" ng-show="title"></h3>
+    <div class="popover-content">
+        <div style="max-height: 150px; overflow: auto">
+            <div treecontrol class="tree-classic"
+                 tree-model="realFolders"
+                 options="treeOptions"
+                 on-selection="showSelected(node)"
+                 selected-node="aFolder">
+                {{node.name}}
+            </div>
+        </div>
+
+
+        <div style="margin-bottom: 10px"></div>
+        <button class="btn btn-sm btn-info" ng-click="$hide();$parent.confirmFileCopy(file, aFolder.id)">{{'COPY' | translate}}</button>
+        &nbsp;
+        <button class="btn btn-sm btn-default" ng-click="$hide()">{{'CANCEL' | translate}}</button>
+    </div>
+
+</div>
+

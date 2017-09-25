@@ -1,0 +1,25 @@
+<fieldset>
+    {{placeholder}}
+    {{originalValue}}
+    {{originalValue.length}}
+
+    <div class="form-group">
+        <label class="col-md-2 control-label"><strong>{{label}}</strong></label>
+        <div class="col-md-6" ng-show="editing">
+            <div class="input-group">
+                <input ng-model="editValue" ng-keypress="error = ''" type="text" placeholder="{{placeholder}}" class="form-control input-md">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click='okClick()'><i class="fa fa-check"></i></button>
+                    <button type="button" class="btn btn-default" ng-click='editing=false'><i class="fa fa-times"></i></button>
+                </span>
+            </div>
+            <span class="inline-error">{{error}}</span>
+        </div>
+
+        <label class="col-md-6 control-label field-editor-value" ng-show="! editing">
+            <a ng-show='allowEdit' ng-click="editClick()" ng-class="originalValue.length==0 ? 'field-placeholder': '' ">{{originalValue || placeholder}}</a>
+            <span ng-hide="allowEdit">{{originalValue}}</span>
+        </label>
+
+    </div>
+</fieldset>

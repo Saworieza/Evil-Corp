@@ -1,0 +1,12 @@
+<div class="popover">
+    <div class="arrow"></div>
+    <h3 class="popover-title">{{'RENAME_FOLDER' | translate}}</h3>
+    <div class="popover-content">
+        <input class="form-control" ng-model="$parent.editFolder">
+        <div style="margin-bottom: 5px"></div>
+        <button class="btn btn-sm btn-danger" ng-click="$hide(); $parent.confirmRenameClick($parent.editFolder);">{{'OK' | translate}}</button>
+        &nbsp;
+        <button class="btn btn-sm btn-default" ng-click="$hide()">{{'CANCEL' | translate}}</button>
+    </div>
+
+</div>

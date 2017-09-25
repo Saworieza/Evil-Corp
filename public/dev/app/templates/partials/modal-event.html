@@ -1,0 +1,29 @@
+<div class="modal" tabindex="-1" role="dialog" bindonce>
+    <div class="modal-dialog people-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <img class="thumb-sm avatar pull-left"  ng-src="{{formatter.getAvatar(event.user_id)}}">
+                <div style='margin-left:47px; font-weight:400; font-size:14px' >
+                    {{event.user.full_name}}
+                    <br>
+                    <p style="font-weight:400; margin-top:2px; font-size:12px">
+                            {{formatter.formatDateCalendar(event.created_at)}}
+                            &nbsp;@{{event.space}}
+                    </p>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div bindonce>
+                    <div class="row" >
+                        {{event.content_text}}
+                        <br><br>
+                        <div class='row' data='event.content_data' calendar='event.calendar' lkr-event-viewer></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="$hide()">{{'CLOSE' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>

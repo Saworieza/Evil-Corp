@@ -1,0 +1,18 @@
+<fieldset>
+    <div class="form-group">
+        <label class="col-md-2 control-label"><strong>{{label}}</strong></label>
+
+        <div class="col-md-6" >
+            <div class="btn-group">
+                <button ng-disabled="{{allowEdit}}" class="btn btn-xs" ng-repeat="radio in radioValues"
+                        ng-class="radio.id==originalValue ? 'btn-info' : 'btn-white' "
+                        ng-click="radioClick(radio.id)">
+                    <i ng-if="radio.icon" class='fa' ng-class="radio.icon"></i>
+                    {{radio.caption}}
+                </button>
+            </div>
+            <span class="inline-error">{{error}}</span>
+        </div>
+
+    </div>
+</fieldset>

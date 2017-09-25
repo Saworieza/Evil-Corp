@@ -1,0 +1,42 @@
+<div class="modal" tabindex="-1" role="dialog" bindonce>
+    <div class="modal-dialog people-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <img class="img-responsive pull-left" style='width:60px' bo-src="formatter.getAvatar(userProfile.id)">
+                <h4 style="margin-left:70px" class="modal-title">{{userProfile.full_name}}<small><br>{{userProfile.position|| '&nbsp;'}}<span ng-if="userProfile.organization">&nbsp;-&nbsp;</span>{{userProfile.organization}}</small>
+                </h4><br>
+                <div class="clearfix"></div>
+            </div>
+            <div class="modal-body">
+                <div bindonce>
+                    <div class="row" >
+                        <div class="col-md-3" >
+
+                            <div ng-if='userProfile.email'      class='profile-contact-info'><i class='fa fa-envelope fa-fw'></i><a href="mailto:{{userProfile.email}}"> {{userProfile.email || ''}}</a></div>
+                            <div ng-if='userProfile.phone'      class='profile-contact-info'><i class='fa fa-phone fa-fw'></i><a href="javascript:void(0)"> {{userProfile.phone || ''}}</a></div>
+                            <div ng-if='userProfile.facebook'   class='profile-contact-info'><i class='fa fa-facebook fa-fw'></i><a href="https://facebook.com/{{userProfile.facebook}}" target="_blank"> {{userProfile.facebook}}</a></div>
+                            <div ng-if='userProfile.twitter'    class='profile-contact-info'><i class='fa fa-twitter fa-fw'></i><a href="https://twitter.com/{{userProfile.twitter}}" target="_blank"> {{userProfile.twitter}}</a></div>
+                            <div ng-if='userProfile.googleplus' class='profile-contact-info'><i class='fa fa-google-plus fa-fw'></i><a href="https://plus.google.com/+{{userProfile.googleplus}}" target="_blank"> {{userProfile.googleplus}}</a></div>
+                            <div ng-if='userProfile.linkdin'    class='profile-contact-info'><i class='fa fa-linkedin fa-fw'></i><a href="http://www.linkedin.com/{{userProfile.linkedin}}" target="_blank"> {{userProfile.linkedin}}</a></div>
+                            <div ng-if='userProfile.skype'      class='profile-contact-info'><i class='fa fa-skype fa-fw'></i><a href="javascript:void(0)"> {{userProfile.skype}}</a></div>
+                            <div ng-if='userProfile.github'     class='profile-contact-info'><i class='fa fa-github fa-fw'></i><a href="https://github.com/{{userProfile.github}}" target="_blank"> {{userProfile.github}}</a></div>
+                        </div>
+                        <div class='col-md-9'>
+                             <h5>{{'PRIVATE_MESSAGE_TO' | translate}} {{userProfile.full_name}}</h5>
+                            <textarea rows="10" class="form-control" ng-model='msg.privateMessage' placeholder="{{'MESSAGE' | translate}}..."></textarea>
+                            <div>&nbsp;</div>
+                            <button class="btn btn-sm btn-primary pull-right" ng-click="sendMessageClick()">{{'SEND' | translate}}</button>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="$hide()">{{'CLOSE' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>

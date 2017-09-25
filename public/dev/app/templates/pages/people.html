@@ -1,0 +1,61 @@
+<div class="content-header b-b">
+    <h1><i class="fa fa-users"></i> {{'PEOPLE' | translate}}</h1>
+</div>
+<div class="content-body">
+    <div class="col-md-2">
+        <div class='side-panel'>
+            <h5>{{'FILTER' | translate}}</h5>
+                <input type="search" class="form-control" ng-model="peopleSearch.text" ng-enter="doSearch()">
+            <br>
+            <h5>{{'ORDER' | translate}}</h5>
+            <ul>
+                <li class='side-menu' >
+                    <a href='javascript:void(0)' ng-click="order='full_name'">{{'FULL_NAME' | translate}}</a>
+                </li>
+                <li class='side-menu'>
+                    <a href='javascript:void(0)' ng-click="order='organization'">{{'ORGANIZATION_OR_DEPT' | translate}}</a>
+                </li>
+                <li class='side-menu'>
+                    <a href='javascript:void(0)' ng-click="order='position'">{{'POSITION' | translate}}</a>
+                </li>
+                <li class='side-menu' ng-repeat="field in customFields" ng-if="field.table">
+                    <a href='javascript:void(0)' ng-click="setOrder(field.name)">{{field.caption}}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-10" >
+        <div class="pasnel panel-stream animated fadeInDown" >
+
+            <div class="row">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>&nbsp</td>
+                            <td ng-if="showPhone"><strong>Phone</strong></td>
+                            <td ng-if="showOrg"><strong>Organization</strong></td>
+                            <td ng-repeat="field in customFields" ng-if="field.table"><strong>{{field.caption}}</strong></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="user in users | orderBy: order | peopleFilter:peopleSearch.text:customFields">
+                            <td>
+                                <img class="thumb-sm avatar pull-left" width='30' ng-src="{{formatter.getAvatar(user.id)}}">
+                                <div style='margin-left:47px; font-weight:300; font-size:15px' >
+                                    <a href="#/userprofile/{{user.id}}">{{user.full_name}}</a>
+                                    <br>
+                                    <small>{{user.position || '&nbsp;'}}<span ng-if="user.position">&nbsp;-&nbsp;</span>{{user.organization}}</small>
+                                </div>
+                            </td>
+                            <td ng-if="showPhone">{{user.phone}}</td>
+                            <td ng-if="showOrg">{{user.organization}}</td>
+                            <td ng-repeat="field in customFields" ng-if="field.table">{{user['custom_'+field.name]}}</td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>

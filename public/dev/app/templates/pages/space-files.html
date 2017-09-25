@@ -1,0 +1,201 @@
+<div class="content-body">
+    <div class="col-md-2">
+        <div class='side-panel'>
+            <h5>{{'FOLDERS' | translate}}</h5>
+            <div treecontrol class="tree-classic"
+                 tree-model="folders"
+                 options="treeOptions"
+                 on-selection="showSelected(node)"
+                 selected-node="selectedFolder">
+                 {{node.name}}
+            </div>
+            <!--<pre>{{folders | json}}</pre>-->
+            <br>
+            <div ng-show="appending" ng-init="rootFolder=1">
+                <div class="input-group" ng-show="selectedFolder.id > 0">
+                    <input type="radio" ng-model="rootFolder" value="1"><small>&nbsp;{{'ROOT' | translate}}</small>&nbsp;
+                    <input type="radio" ng-model="rootFolder" value="0">
+                    <small>&nbsp;{{'UNDER' | translate}} "{{selectedFolder.name}}"</small>
+                </div>
+                 <div class="input-group">
+                        <input class="form-control" ng-model="editFolder" placeholder="{{'NEW_FOLDER' | translate}}">
+                         <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click='okClick()'><i class="fa fa-check"></i></button>
+                            <button type="button" class="btn btn-default" ng-click="cancelClick()"><i class="fa fa-times"></i></button>
+                        </span>
+                 </div>
+
+            </div>
+            <br>
+            <button ng-show='!appending && currentSpace.role() >2' class="btn btn-xxs btn-block btn-primary" ng-click="newFolderClick()">{{'NEW_FOLDER' | translate}}</button>
+        </div>
+    </div>
+    <div class="col-md-10">
+        <div class="row" >
+            <div class="panel-stream" style="padding: 13px !important;">
+                <div class='row' style="margin-bottom: 10px;">
+                    <div class="col-md-6 folder-title">
+                            {{selectedFolder.path}}
+                        <a href="javascript:void(0)"
+                           ng-mousedown="editFolder = selectedFolder.name"
+                           ng-show = "selectedFolder.id > 0 && currentSpace.role() >2"
+                           class="btn btn-table"
+                           style="margin-bottom: 10px; margin-right: -2px"
+                           data-template="partials/pop-rename-folder.html" container='body' data-animation="am-fade" bs-popover>
+                            <i class="fa fa-pencil fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0)"
+                           ng-show = "selectedFolder.id >0 && files.length==0 && currentSpace.role() >2"
+                           data-title="{{'DELETE_THIS_FOLDER' | translate}}"
+                           class="btn btn-table"
+                           style="margin-bottom: 10px; margin-right: -2px"
+                           data-template="partials/pop-delete.html" container='body' data-animation="am-fade" bs-popover>
+                           <i class="fa fa-trash fa-fw"></i>
+                        </a>
+                    </div>
+                    <div class="col-md-3 input-group pull-right">
+                        <input class="form-control" ng-model="filter" placeholder="{{'SEARCH' | translate}}" ng-enter="search()" ng-change="filterKeyPress()">
+                         <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click='search()'><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </div>
+                <span ng-show = "selectedFolder.id > 0" lkr-file-editor show-post-button file-accept='*' caption="{{'UPLOAD'| translate}}" data='newFiles' file-editor-id = '222' style="width:90%; position: relative; left:-10px" ></span>
+                <span class="btn-group">
+                    <button class="btn btn-white btn-sm" ng-click="checkAllClick('1')"><i class="fa fa-mx fa-check-square-o"></i></button>
+                    <button class="btn btn-white btn-sm" ng-click="checkAllClick('2')"><i class="fa fa-mx fa-square-o"></i></button>
+
+                    <button ng-click="batchCopyClick($event)" class="btn btn-white btn-sm" id="btnCopy">
+                        <i class="fa fa-copy  fa-mx"></i>
+                    </button>
+
+                    <button ng-click="batchMoveClick($event)" class="btn btn-white btn-sm" id="btnMove">
+                        <i class="fa fa-arrow-circle-right  fa-mx"></i>
+                    </button>
+                     <button class="btn btn-white btn-sm"
+                             data-title="{{'CONFIRM_DELETE_FILES' | translate}}"
+                             class="btn btn-table"
+                             placement="bottom"
+                             data-template="partials/pop-delete-files.html" container='body' data-animation="am-fade" bs-popover>
+                         <i class="fa fa-trash fa-mx"></i></button>
+                </span>
+
+                <span class="btn-group" >
+                    <button class="btn btn-white btn-sm" ng-class="{'active' : viewer.mode=='table'}" ng-click="viewer.mode='table'" > <i class="fa fa-table  fa-mx"></i></button>
+                    <button class="btn btn-white btn-sm" ng-class="{'active' : viewer.mode=='images'}" ng-click="viewer.mode='images'"> <i class="fa fa-image  fa-mx"></i></button>
+                </span>
+
+                <div style="margin-bottom: 5px">&nbsp;</div>
+                <div >
+                <table class="table table-striped"  bindonce>
+                    <thead>
+                        <tr>
+                            <td>
+                                &nbsp;
+                            </td>
+                            <td>
+                                &nbsp;
+                            </td>
+                            <td>
+                                <div lkr-column field-caption="{{'FILE_NAME' | translate}}" field-name='file_name' sort-function='setOrder(colName)' sort-options='sort'></div>
+                            </td>
+                            <td>
+                                <div lkr-column field-caption="{{'DESCRIPTION' | translate}}" field-name='description' sort-function='setOrder(colName)' sort-options='sort'></div>
+                            </td>
+
+                            <td>
+                                <div lkr-column field-caption="{{'CREATED_BY' | translate}}" field-name='full_name' sort-function='setOrder(colName)' sort-options='sort'></div>
+                            </td>
+
+                            <td>
+                                <div lkr-column field-caption="{{'FILE_DATE' | translate}}" field-name='file_date' sort-function='setOrder(colName)' sort-options='sort'></div>
+                            </td>
+                            <td style="text-align: right">
+                                <div lkr-column field-caption="{{'SIZE' | translate}}" field-name='file_size' sort-function='setOrder(colName)' sort-options='sort'></div>
+                            </td>
+                            <td>
+                                &nbsp;
+                            </td>
+
+                        </tr>
+                    </thead>
+                    <tbody ng-if="viewer.mode=='images'">
+                        <tr>
+                            <td colspan="8">
+                                <div class="row" >
+                                    <ul class="files-image-view">
+                                        <li ng-repeat="file in files">
+                                            <div class="check-box">
+                                                <input  type="checkbox" ng-model="file.checked" ng-true-value="1" ng-false-value="0">
+                                            </div>
+                                            <a href="{{getUrlToFile(file.code)}}" download><img class="preview" ng-if="file.image" ng-src="{{file.image}}"></a>
+
+                                            <img class="large-icon" ng-if="file.large_icon" ng-src="{{file.large_icon}}">
+                                            <div class="file-name">{{file.file_name}}</div>
+                                            <div class="file-info">{{formatter.formatDateTime( file.file_date)}}</div>
+                                            <div class="file-info">{{formatter.formatFileSize(file.file_size)}}</div>
+                                            <div class="file-info">{{file.user}}</div>
+
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody ng-if="viewer.mode=='table'">
+                    <tr ng-repeat="file in files" >
+
+                        <td style="text-align: center; vertical-align: middle">
+                            <input  type="checkbox" ng-model="file.checked" ng-true-value="1" ng-false-value="0">
+                        </td>
+                        <td style="vertical-align:middle; width: 20px">
+                            <img width="24" ng-src="{{file.icon}}">
+                        </td>
+                        <td style="vertical-align:middle">
+                            <a href="{{getUrlToFile(file.code)}}" download>{{file.file_name}}</a>
+                        </td>
+                        <td style="vertical-align:middle">{{file.description}}
+                        </td>
+                        <td style="vertical-align:middle">{{file.user}}</td>
+                        <td style="vertical-align:middle">{{formatter.formatDateTime( file.file_date)}}</td>
+                        <td style="vertical-align:middle; text-align: right ">{{formatter.formatFileSize(file.file_size)}}</td>
+                        <td>
+                            <button ng-if="menuIndex > 0 && (currentSpace.isMine(file.user_id) || currentSpace.role() >2)"
+                                    class="btn btn-table" data-title="{{'MOVE_TO' | translate}}"
+                                    data-template="partials/pop-move-file.html"
+                                    data-file="file"
+                                    data-folders ='toFolders'
+                                    data-placement="left"
+                                    container='body' data-animation="am-fade" bs-popover>
+                                <i class="fa fa-arrow-circle-right fa-mx fa-fw"></i>
+                            </button>
+                            <button
+                                    class="btn btn-table" data-title="{{'COPY_TO' | translate}}"
+                                    data-template="partials/pop-copy-file.html"
+                                    data-file="file"
+                                    data-folders ='toFolders'
+                                    data-placement="left"
+                                    container='body' data-animation="am-fade" bs-popover>
+                                <i class="fa fa-copy fa-mx fa-fw"></i>
+                            </button>
+                            <button ng-if="menuIndex > 0 && (currentSpace.isMine(file.user_id) || currentSpace.role() >2)"
+                                    class="btn btn-table"
+                                    data-title=""
+                                    data-template="partials/pop-delete-file.html" data-file="file" container='body' data-placement="left" data-animation="am-fade" bs-popover>
+                                    <i class="fa fa-trash fa-mx fa-fw"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+
+                </table>
+                </div>
+
+                <div ng-show="busy" class="waiting-indicator"><i class="fa fa-spinner"></i>&nbsp;loading</div>
+                <div infinite-scroll="paging()" infinite-scroll-distance="0" infinite-scroll-disabled="busy">
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

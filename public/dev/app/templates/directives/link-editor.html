@@ -1,0 +1,25 @@
+<div>
+<div class="input-group">
+  <input ng-paste='pasteLink()' ng-change="keyPress()" ng-model='data.url' class="form-control" placeholder="{{'TYPE_OR_PASTE_IN_A_WEB_ADDRESS' | translate}}">
+  <span class="input-group-btn">
+    <button type="button" class="btn btn-primary" ng-click='linkClick()'>
+      <i ng-class="{true:'fa fa-spinner fa-spin', false:'fa fa-search'}[data.waiting]"></i></button>
+  </span>
+</div>
+    <p>
+        <span class='inline-error' ng-show="errors['link.url']">{{errors['link.url'] | joinBy:'.'}}</span>
+        <span class='inline-error' ng-show="errors['link.done']">{{errors['link.done'] | joinBy:'.'}}</span>
+    </p>
+
+    <div class='row' ng-show='data.done' style="padding:15px">
+        <div class="col-md-3">
+            <img ng-show='data.image' class="img-responsive" ng-src="{{data.image}}">
+        </div>
+        <div class="col-md-9 link-view">
+            <div class="title">{{data.title}}</div>
+            <div class="description">{{data.description}}</div>
+            <h6 style='font-weight:300'>{{data.url}}</h6>
+        </div>
+</div>
+<div style="height:8px"></div>
+</div>

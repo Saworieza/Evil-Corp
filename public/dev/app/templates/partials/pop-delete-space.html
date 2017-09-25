@@ -1,0 +1,12 @@
+<div class="popover">
+    <div class="arrow"></div>
+    <div class="popover-content">
+        <div class="alert alert-danger"><strong>{{'DELETE_SPACE_WARNING' | translate}}</strong></div>
+        <input type="text" class="form-control" ng-model='deletePhrase' placeholder="{{'DELETE_SPACE_PLACEHOLDER' | translate}}">
+        <br>
+        <button class="btn btn-sm btn-danger" ng-click="$hide(); confirmDeleteClick(deletePhrase);">{{'DELETE' | translate}}</button>
+        &nbsp;
+        <button class="btn btn-sm btn-default" ng-click="$hide();  deletePhrase = '';">{{'CANCEL' | translate}}</button>
+    </div>
+
+</div>

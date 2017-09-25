@@ -1,0 +1,15 @@
+<span>
+    <input  id="myFileInputAll{{fileEditorId}}" type="file" accept="*" ng-file-select="onFileSelect($files)" multiple style="position:absolute;left:-10000px;top:-10000px;">
+    <button class='btn btn-sm btn-gray' style='margin-left: 10px' ng-click="selectClick()"><i class='fa fa-paperclip'></i> {{caption || ('ATTACH_FILES' | translate)}}
+    </button>
+    <div ng-repeat="f in data |filter: filterFn" style="padding: 10px">
+            <span>
+                <i ng-show="f.status == 'w'" class="fa fa-spinner"></i>
+                <i ng-show="f.status == 'error'" style="color: red" class="fa fa-times"></i>
+                <i ng-show="f.status == 'done'" style='color: #318BBD' class="fa fa-check"></i>
+                {{f.original_name}}&nbsp;<small>({{formatFileSize(f.file_size)}})</small> - <a ng-click='removeClick(f.id)' href="javascript:void(0)"><small>{{'REMOVE' | translate}}</small></a>
+            </span>
+            <div><input class="form-control form-control-file-input" ng-disabled="f.status == 'error'" ng-model='f.description' placeholder="{{'FILE_DESCRIPTION' | translate}}"></div>
+    </div>
+    <button ng-if="showPostButton && data.length>0" class="btn btn-xs btn-info" style="position: relative; left:10px" ng-click="postButtonClick()">{{'OK' | translate}}</button>
+</span>

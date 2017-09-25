@@ -1,0 +1,48 @@
+<div class="modal" tabindex="-1" role="dialog" bindonce>
+    <div class="modal-dialog space-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{title}}</h4>
+                <div class="clearfix"></div>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label"><strong>{{'TITLE' | translate}}</strong></label>
+                        <div class="col-md-10">
+                           <input class="form-control" ng-keypress="error['title']=null" ng-model="editSpace.title">
+                           <span class="inline-error">{{error['title']}}</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label"><strong>{{'DESCRIPTION' | translate}}</strong></label>
+                        <div class="col-md-10">
+                            <textarea class="form-control" rows="4" ng-model="editSpace.description"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label"><strong>{{'ACCESS' | translate}}</strong></label>
+                        <div class="col-md-10">
+                            <select class="form-control" ng-model="editSpace.access">
+                                <option value="PU">{{'PUBLIC' | translate}}</option>
+                                <option value="PR">{{'PRIVATE' | translate}}</option>
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label"><strong>{{'OPTIONS' | translate}}</strong></label>
+                        <label ng-repeat="feature in features" class="control-label">
+                            <input type="checkbox" checklist-model="editSpace.options.features" checklist-value="feature.value">&nbsp;{{feature.text}}&nbsp;&nbsp;&nbsp;
+                        </label>
+                    </div>
+                 </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" ng-click="editSpaceOkClick()">{{'OK' | translate}}</button>&nbsp;
+                <button type="button" class="btn btn-default" ng-click="$hide()">{{'CANCEL' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>

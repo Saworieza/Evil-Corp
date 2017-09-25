@@ -1,0 +1,674 @@
+<div class="content-header b-b">
+    <h1><i class="fa fa-cogs"></i> {{'SITE_ADMIN' | translate}}</h1>
+</div>
+<div class="content-body" ng-cloak>
+    <div class="col-md-2">
+        <div class='side-panel'>
+            <ul>
+                <li class='side-menu' ng-class="viewIndex == 0 ? 'selected' : ''" ng-click="viewIndex = 0">
+                    <a href='javascript:void(0)'>{{'USERS' | translate}}</a>
+                </li>
+
+                <li class='side-menu' ng-class="viewIndex == 2 ? 'selected' : ''" ng-click="viewIndex = 2">
+                    <a href='javascript:void(0)'>{{'SPACES' | translate}}</a>
+                </li>
+
+                <li class='side-menu' ng-class="viewIndex == 3 ? 'selected' : ''" ng-click="viewIndex = 3">
+                    <a href='javascript:void(0)'><span>{{'CONFIG' | translate}}</span>
+                    </a>
+                </li>
+
+                <li class='side-menu' ng-class="viewIndex == 1 ? 'selected' : ''" ng-click="viewIndex = 1">
+                    <a href='javascript:void(0)'><span>Testing</span>
+                    </a>
+                </li>
+
+                <!-- By Lee -->
+                <!--  
+                <li class='side-menu' ng-class="viewIndex == 1 ? 'selected' : ''" ng-click="viewIndex = 1">
+                    <a href='javascript:void(0)'><span>{{'MAINTENANCE' | translate}}</span>
+                    </a>
+                </li>
+                <li class='side-menu' ng-class="viewIndex == 4 ? 'selected' : ''" ng-click="viewIndex = 4">
+                    <a href='javascript:void(0)'><span>{{'APP_UPGRADE' | translate}}</span>
+                    </a>
+                </li>
+                <li class='side-menu' ng-class="viewIndex == 5 ? 'selected' : ''" ng-click="viewIndex = 5; loadSysLog()">
+                    <a href='javascript:void(0)'><span>{{'SYS_LOG' | translate}}</span>
+                    </a>
+                </li>
+                -->
+
+            </ul>
+
+        </div>
+    </div>
+    <div class="col-md-10" >
+        <div class="panel"  ng-show="viewIndex == 5" style="padding: 10px" ng-cloak>
+            <textarea class="form-control" rows='20' style="font-family: 'Courier New', Courier, monospace">{{syslog}}</textarea>
+            <br>
+            <button class="btn btn-warning btn-sm" ng-click="deleteLog()">Clear log</button>
+            <br>
+        </div>
+    </div>
+    <div class="col-md-10" >
+        <div class="panel"  ng-show="viewIndex == 0" ng-cloak>
+            <div style="padding: 15px">
+                <h4>{{'USERS' | translate}}</h4>
+
+                <div class="welsl">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="control-label"><strong>{{'NEW_USER' | translate}}&nbsp;</strong>({{'ENTER_AN_EMAIL_WHERE_TO_SEND' | translate}})</label>
+
+                            <div class="input-group ">
+                                <input  ng-model='newUser.email' class="form-control" placeholder="{{'E_MAIL' | translate}}">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-info" ng-click='newUserClick()'>
+                                        <i ng-class="{true:'fa fa-spinner fa-spin', false:'fa fa-send-o'}[newUser.waiting]"></i>&nbsp;<small>{{'SEND' | translate}}</small>
+                                    </button>
+                                </span>
+                            </div>
+                            <a href="javascript:void(0)" ng-click="newUserFormClick()"><small>{{'USER_MANUAL_ADD' | translate}}</small></a>
+
+                            <div class="padnel-group" ng-model="newUserPanel" bs-collapse start-collapsed="true">
+                                <div class="panesl panel-default">
+                                    <div class="panel-collapse" bs-collapse-target>
+                                        <div class="panel-body well">
+                                            <form class="form-horizontal">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">{{'FULL_NAME' | translate}}</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" ng-model="newuser.full_name" class="form-control">
+                                                        <div class="inline-error">{{errors['full_name']}}</div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">{{'E_MAIL' | translate}}</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" ng-model="newuser.email" class="form-control">
+                                                        <div class="inline-error">{{errors['email']}}</div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">{{'PASSWORD' | translate}}</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="password" ng-model="newuser.password" class="form-control">
+                                                        <div class="inline-error">{{errors['password']}}</div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">{{'CONFIRM_NEW_PASSWORD' | translate}}</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="password" ng-model="newuser.password_confirmation" class="form-control">
+                                                        <div class="inline-error">{{errors['password_confirmation']}}</div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label"></label>
+                                                    <div class="col-sm-8">
+                                                        <input type="checkbox" ng-model="newuser.admin" >&nbsp;<small>{{'ADMIN' | translate}}</small>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label"></label>
+                                                    <div class="col-sm-8">
+                                                        <input type="checkbox" ng-model="newuser.create_spaces" >&nbsp;<small>{{'CREATE_SPACES' | translate}}</small>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label"></label>
+                                                    <div class="col-sm-8">
+                                                        <button class="btn btn-primary btn-sm" ng-click="newUserFormOkClick()">{{'OK' | translate}}</button>&nbsp;
+                                                        <button class="btn btn-white btn-sm" ng-click="newUserFormCancelClick()">{{'CANCEL' | translate}}</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6 ">
+                            <div class="row">
+                                <div class="panel-info-admin col-md-5" >
+                                    <div class="title pull-left">
+                                        {{'ACTIVE_USERS' | translate}}
+                                    </div>
+                                    <div class="value pull-right">
+                                        {{userCounters.active}}
+                                    </div>
+                                </div>
+                                <div class="panel-info-admin col-md-5" >
+                                    <div class="title pull-left">
+                                        {{'INVITED_USERS' | translate}}
+                                    </div>
+                                    <div class="value pull-right">
+                                        {{userCounters.invited}}
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <table class="table table-striped table-users">
+                    <thead>
+                        <tr>
+                            <td>
+                                <div lkr-column field-caption="{{'FULL_NAME' | translate}}" field-name='full_name' sort-function='setOrder(colName)' sort-options='sort'></div>
+                            </td>
+                            <td>
+                                <div lkr-column field-caption="{{'E_MAIL' | translate}}" field-name='email' sort-function='setOrder(colName)' sort-options='sort'></div>
+                            </td>
+                            <td>
+                                <div lkr-column field-caption="{{'LAST_LOGIN' | translate}}" field-name='last_login' sort-function='setOrder(colName)' sort-options='sort'></div>
+                            </td>
+                            <td>
+                                <div lkr-column field-caption="{{'STATE' | translate}}" field-name='state' sort-function='setOrder(colName)' sort-options='sort'></div>
+                            </td>
+                            <td>
+                                <div lkr-column field-caption="{{'EXPIRATION' | translate}}" field-name='activation_expire' sort-function='setOrder(colName)' sort-options='sort'></div>
+                            </td>
+                            <td>
+                                <div lkr-column field-caption="{{'ADMIN' | translate}}" field-name='admin' sort-function='setOrder(colName)' sort-options='sort'></div>
+                            </td>
+                            <td>
+                                <div lkr-column field-caption="{{'CREATE_SPACES' | translate}}" field-name='create_spaces' sort-function='setOrder(colName)' sort-options='sort'></div>
+                            </td>
+
+                            <td>&nbsp;</td>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="user in users | orderBy : sort.column: !sort.asc">
+
+                            <td style="vertical-align:middle;">
+                                <img width='30' ng-src="{{formatter.getAvatar(user.id)}}">
+                                {{user.full_name}}
+                            </td>
+                            <td style="vertical-align:middle;">{{user.email}}</td>
+                            <td style="vertical-align:middle;">{{formatter.formatDateTime(user.last_login)}}</td>
+
+                            <td style="vertical-align:middle;" ng-show='user.state==2'><span class='label label-success label-table'>{{'ACTIVE' | translate}}</span></td>
+                            <td style="vertical-align:middle;" ng-show='user.state==1'><span class='label label-info label-table'>{{'INVITED' | translate}}</span></td>
+                            <td style="vertical-align:middle;" ng-show='user.state==0'><span class='label label-warning label-table'>{{'SUSPENDED' | translate}}</span></td>
+                            <td style="vertical-align:middle;"><span ng-show='user.state==1'>{{formatter.formatDateTime(user.activation_expire)}}</span></td>
+                            <td style="vertical-align:middle;">
+
+                                <button class="btn btn-xxs" ng-click="adminClick(user.id)"
+                                        ng-class="user.admin ? 'btn-info' : 'btn-white' ">
+                                        <i class="fa fa-fw" ng-class="user.admin ? 'fa-check' : '' "></i>
+                                </button>
+                            </td>
+                            <td style="vertical-align:middle;">
+
+                                <button class="btn btn-xxs" ng-click="createSpacesClick(user.id)"
+                                        ng-class="user.create_spaces ? 'btn-info' : 'btn-white' ">
+                                        <i class="fa fa-fw" ng-class="user.create_spaces ? 'fa-check' : '' "></i>
+                                </button>
+                            </td>
+                            <td>
+
+                                <button  class="btn btn-table pull-right"
+                                        data-template="partials/pop-user-state.html"
+                                        data-container='body'
+                                        data-placement="left"
+                                        data-animation="am-fade"
+                                        bs-popover>
+                                        {{'REMOVE_OR_SUSPEND' | translate}}</button>
+                                <button ng-if='user.state==0' class="btn btn-table pull-right" ng-click="updateStateClick(user.id, 2)">{{'ACTIVATE' | translate}}</button>
+                                <button ng-if='user.state==1' class="btn btn-table pull-right" ng-click="reNewClick(user.id)">{{'RENEW_INVITATION' | translate}}</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <div class="panel" ng-cloak ng-show="viewIndex == 2">
+            <div style="padding: 15px">
+                <h4>{{'SPACES' | translate}}</h4>
+                <table class="table table-striped table-users">
+                    <thead>
+                    <tr>
+                        <td><strong><a href="javascript:void(0)" ng-click="spacesOrder='title'">&nbsp;{{'TITLE' | translate}}</a></strong></td>
+                        <td><strong><a href="javascript:void(0)" ng-click="spacesOrder='created_at'">{{'CREATED_AT' | translate}}</a></strong></td>
+                        <td><strong><a href="javascript:void(0)" ng-click="spacesOrder='last_login'">{{'LAST_VISIT' | translate}}</a></strong></td>
+                        <td><strong><a href="javascript:void(0)" ng-click="spacesOrder='created_by'">{{'CREATED_BY' | translate}}</a></strong></td>
+                        <td><strong><a href="javascript:void(0)" ng-click="spacesOrder='user_count'">{{'USERS' | translate}}</a></strong></td>
+                        <td><strong><a href="javascript:void(0)" ng-click="spacesOrder='content_count'">{{'POSTS' | translate}}</a></strong></td>
+                        <td><strong><a href="javascript:void(0)" ng-click="spacesOrder='access'">{{'ACCESS' | translate}}</a></strong></td>
+                        <td class="text-center"><strong><a href="javascript:void(0)" ng-click="spacesOrder='content_count'">{{'ACTIVE' | translate}}</a></strong></td>
+                        <td><strong><a href="javascript:void(0)" ng-click="spacesOrder='id'">#</a></strong></td>
+
+
+                        <td>&nbsp;</td>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="space in spaces | orderBy: spacesOrder">
+                        <td style="vertical-align:middle;">
+                            {{space.title}}
+                        </td>
+                        <td style="vertical-align:middle;">{{formatter.formatDateTime(space.created_at)}}</td>
+                        <td style="vertical-align:middle;">{{formatter.formatDateTime(space.last_visit)}}</td>
+                        <td style="vertical-align:middle;">{{space.created_by}}</td>
+                        <td style="vertical-align:middle;">{{space.user_count}}</td>
+                        <td style="vertical-align:middle;">{{space.content_count}}</td>
+                        <td style="vertical-align:middle;" ng-show="space.access=='PU'"><span class='label label-success label-table'>{{'PUBLIC' | translate}}</span></td>
+                        <td style="vertical-align:middle;" ng-show="space.access=='PR'"><span class='label label-info label-table'>{{'PRIVATE' | translate}}</span></td>
+                        <td style="vertical-align:middle;" class="text-center">
+                            <button class="btn btn-xxs" ng-click="spaceStateClick(space)"
+                                    ng-class="space.active ? 'btn-info' : 'btn-white' ">
+                                <i class="fa fa-fw" ng-class="space.active ? 'fa-check' : '' "></i>
+                            </button>
+                        </td>
+
+                        <td style="vertical-align:middle;">{{space.id}}</td>
+                        <td style="vertical-align:middle;">
+                            <button class="btn btn-xxs btn-warning pull-right"
+                                    data-template="partials/pop-delete-space-admin.html"
+                                    data-container='body'
+                                    data-placement="left"
+                                    data-animation="am-fade"
+                                    bs-popover>
+                                {{'DELETE_SPACE' | translate}}
+                            </button>
+                            <span class=" pull-right">&nbsp;</span>
+
+                            <button class="btn btn-xxs btn-white pull-right"
+                                    data-template="partials/pop-moderator-space-admin.html"
+                                    data-container='body'
+                                    data-placement="left"
+                                    data-animation="am-fade"
+                                    bs-popover>
+                                {{'MAKE_MODERATOR_OF_THIS_SPACE' | translate}}
+                            </button>
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <div class="panel" ng-cloak ng-show="viewIndex == 1">
+            <div style="padding: 15px">
+                <h4>{{'MAINTENANCE' | translate}}</h4>
+                <table class="table">
+                    <tr>
+                        <td>{{'REMOVE_INTERRUPTED_UPLOADS' | translate}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{'DELETE_MESSAGES_ALREADY_READ' | translate}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{'DELETE_OLD_CHAT' | translate}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{'CLEAR_APP_CACHE' | translate}}</td>
+                    </tr>
+                    </tr>
+                    <tr>
+                        <td><br>
+                            <button class="btn btn-xs btn-primary" ng-click="runMaintenanceClick()">{{'PERFORM_MAINTENANCE_TASKS_NOW' | translate}}</button>
+                        </td>
+                    </tr>
+                </table>
+                <br>
+                <div>
+                    <p>{{'MAINTENANCE_TASKS_FROM_COMMAND_LINE_MSG' | translate}}:</p>
+                    <pre> php artisan linkr:maintenance</pre>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="panel" ng-cloak ng-show="viewIndex == 4">
+            <div style="padding: 15px">
+                <h4>{{'APP_UPGRADE' | translate}}</h4>
+                <div class="well">
+                    {{'APP_UPGRADE_MSG' | translate}}
+                </div>
+                <button class="btn btn-xs btn-primary" ng-click="upgradeClick()">{{'APP_UPGRADE' | translate}}</button>
+
+            </div>
+        </div>
+        <div class="panel" ng-cloak ng-show="viewIndex == 3">
+            <div style="padding: 15px">
+                <h4>{{'CONFIG' | translate}}</h4>
+                <!--<pre>{{appInfo|json}}</pre>-->
+                <div class="well" ng-hide="appInfo.isw">The configuration file ({{appInfo.file}}) is not writable by the webserver. Please, give it write permissions in order to edit the configuration options from this page.</div>
+                <table class="table">
+                    <tr>
+                        <td style="width: 20%">Linkr version</td>
+                        <td >{{appInfo.version}}</td>
+                    </tr>
+                    <tr>
+                        <td>Color scheme<br>
+                        <td>
+                            <select class="form-control" ng-model="appInfo.theme">
+                                <option value="default">Default</option>
+                                <option value="lightblue">Light blue</option>
+                                <option value="darkblue">Dark blue</option>
+                                <option value="green">Green</option>
+                                <option value="red">Red</option>
+                                <option value="ubu">Ubu</option>
+                                <option value="dark">Dark</option>
+                                <option value="teal">Teal</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Debug<br>
+                        <small>Turn On/Off debugger</small></td>
+
+                        <td>
+                            <select class="form-control" ng-model="appInfo.debug">
+                                <option value="1">{{'YES' | translate}}</option>
+                                <option value="0">{{'NO' | translate}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Self Registration<br>
+                        <small>Use * for all domains, comma separated domains names or leave it blank to disable the self-registration feature</small></td>
+                        <td>
+                            <input type="text" class="form-control" ng-model = "appInfo.self_registration_domain">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Uploads folder</td>
+                        <td>
+                            <input type="text" class="form-control" ng-model = "appInfo.files_folder">
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>eMail Settings</td>
+                        <td>
+
+                                <label class="control-label">Driver</label>
+                                <select class="form-control" ng-model="appInfo.mail_driver">
+                                    <option value="mandrill">Mandrill</option>
+                                    <option value="mailgun">Mailgun</option>
+                                    <option value="smtp">SMTP</option>
+                                    <option value="mail">mail</option>
+                                    <option value="sendmail">sendmail</option>
+                                </select>
+                                <div class="b-sep"></div>
+                                <label class="control-label">"From" Address</label>
+                                <input class="form-control" ng-model="appInfo.mail_from_address">
+                                <div class="b-sep"></div>
+
+                                <label class="control-label">"From" Name</label>
+                                <input class="form-control" ng-model="appInfo.mail_from_name">
+                            <div class="b-sep"></div>
+
+                            <div ng-show="appInfo.mail_driver=='smtp'">
+                                <label class="control-label">SMTP Host Address</label>
+                                <input class="form-control" ng-model="appInfo.mail_host">
+                                <div class="b-sep"></div>
+
+                                <label class="control-label">SMTP Host Port</label>
+                                <input class="form-control" ng-model="appInfo.mail_port">
+                                <div class="b-sep"></div>
+
+                                <label class="control-label">E-Mail Encryption Protocol</label>
+                                <input class="form-control" ng-model="appInfo.mail_encryption">
+                                <div class="b-sep"></div>
+                                <label class="control-label">SMTP Server Username</label>
+                                <input class="form-control" ng-model="appInfo.mail_username">
+                                <div class="b-sep"></div>
+                                <label class="control-label">SMTP Server Password</label>
+                                <input class="form-control" type="password" ng-model="appInfo.mail_password">
+                                <div class="b-sep"></div>
+
+                                    <label class="control-label">Confirm SMTP Server Password</label>
+                                    <input class="form-control" type="password" ng-model="appInfo.mail_password_appInfo">
+                                </div>
+                            <div ng-show="appInfo.mail_driver=='mandrill'">
+                                <label class="control-label">Mandrill API KEY</label>
+                                <input class="form-control" ng-model="appInfo.mail_mandrill_secret">
+                            </div>
+                            <div ng-show="appInfo.mail_driver=='mailgun'">
+                                <label class="control-label">Mailgun Domain</label>
+                                <input class="form-control" ng-model="appInfo.mail_mailgun_domain">
+
+                                <label class="control-label">Mailgun API KEY</label>
+                                <input class="form-control" ng-model="appInfo.mail_mailgun_secret">
+                            </div>
+
+
+
+                            <div ng-show="appInfo.mail_driver=='sendmail'">
+                                <label class="control-label">Sendmail System Path (Only when using the "sendmail" driver)</label>
+                                <input class="form-control" ng-model="appInfo.mail_sendmail">
+                            </div>
+
+            </td>
+                </tr>
+                    <tr>
+                        <td>Locale</td>
+
+                        <td>
+                            <input class="form-control" ng-model="appInfo.locale">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>eMail Queue<br>
+                        <small>Disable eMail queue if you have trouble setting up the corresponding CRON job.</small></td>
+                        <td>
+                            <select class="form-control" ng-model="appInfo.no_email_queue">
+                                <option value="1">Disable email queue</option>
+                                <option value="0">Enable email queue</option>
+                            </select>
+                        </td>
+                    </tr>
+                    </tr>
+                    <tr>
+                        <td>Hide Moderators<br>
+                        <small>Hide moderators from memeber lists</small></td>
+
+                        <td>
+                            <select class="form-control" ng-model="appInfo.hide_moderators">
+                                <option value="1">{{'YES' | translate}}</option>
+                                <option value="0">{{'NO' | translate}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Hide Tasks<br>
+                        <small>Hide "Tasks" global module</small></td>
+
+                        <td>
+                            <select class="form-control" ng-model="appInfo.hide_tasks">
+                                <option value="1">{{'YES' | translate}}</option>
+                                <option value="0">{{'NO' | translate}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Hide People<br><small>Hide "People" global module</small></td>
+
+                        <td>
+                            <select class="form-control" ng-model="appInfo.hide_people">
+                                <option value="1">{{'YES' | translate}}</option>
+                                <option value="0">{{'NO' | translate}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Hide Calendar<br><small>Hide "Calendar" global module</small></td>
+
+                        <td>
+                            <select class="form-control" ng-model="appInfo.hide_calendar">
+                                <option value="1">{{'YES' | translate}}</option>
+                                <option value="0">{{'NO' | translate}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Hide Tickets<br>
+                        <small>Hide "Tickets" global module</small></td>
+
+                        <td>
+                            <select class="form-control" ng-model="appInfo.hide_tickets">
+                                <option value="1">{{'YES' | translate}}</option>
+                                <option value="0">{{'NO' | translate}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Create spaces<br>
+                            <small>New users can create spaces by default</small>
+
+                        </td>
+
+                        <td>
+                            <select class="form-control" ng-model="appInfo.default_crete_spaces">
+                                <option value="1">{{'YES' | translate}}</option>
+                                <option value="0">{{'NO' | translate}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Default space #<br>
+                            <small>Mandatory space for all users</small>
+
+                        </td>
+
+                        <td>
+                            <input class="form-control" ng-model="appInfo.default_space">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            People: show phone<br>
+                            <small>Show phone field in people list</small>
+                        </td>
+                        <td>
+                            <select class="form-control" ng-model="appInfo.people_show_phone">
+                                <option value="1">{{'YES' | translate}}</option>
+                                <option value="0">{{'NO' | translate}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            People: show organization<br>
+                            <small>Show organization field in people list</small>
+                        </td>
+                        <td>
+                            <select class="form-control" ng-model="appInfo.people_show_org">
+                                <option value="1">{{'YES' | translate}}</option>
+                                <option value="0">{{'NO' | translate}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Profile: Facebook<br>
+                            <small>Show facebook field</small>
+                        </td>
+                        <td>
+                            <select class="form-control" ng-model="appInfo.profile_facebook">
+                                <option value="1">{{'YES' | translate}}</option>
+                                <option value="0">{{'NO' | translate}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Profile: Twitter<br>
+                            <small>Show twitter field</small>
+                        </td>
+                        <td>
+                            <select class="form-control" ng-model="appInfo.profile_twitter">
+                                <option value="1">{{'YES' | translate}}</option>
+                                <option value="0">{{'NO' | translate}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Profile: Google+<br>
+                            <small>Show google+ field</small>
+                        </td>
+                        <td>
+                            <select class="form-control" ng-model="appInfo.profile_google">
+                                <option value="1">{{'YES' | translate}}</option>
+                                <option value="0">{{'NO' | translate}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Profile: LinkedIn<br>
+                            <small>Show LinkedIn field</small>
+                        </td>
+                        <td>
+                            <select class="form-control" ng-model="appInfo.profile_linkedin">
+                                <option value="1">{{'YES' | translate}}</option>
+                                <option value="0">{{'NO' | translate}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Profile: GitHub<br>
+                            <small>Show GitHub field</small>
+                        </td>
+                        <td>
+                            <select class="form-control" ng-model="appInfo.profile_github">
+                                <option value="1">{{'YES' | translate}}</option>
+                                <option value="0">{{'NO' | translate}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Profile: Skype<br>
+                            <small>Show Skype field</small>
+                        </td>
+                        <td>
+                            <select class="form-control" ng-model="appInfo.profile_skype">
+                                <option value="1">{{'YES' | translate}}</option>
+                                <option value="0">{{'NO' | translate}}</option>
+                            </select>
+                        </td>
+                    </tr>
+
+
+            </td>
+                    </tr>
+                    <tr>
+                        <td>Invitation expiry<br>
+                            <small>In days</small></td>
+                        <td>
+                            <input type="text" class="form-control" ng-model = "appInfo.invitation_expire">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button class="btn btn-primary btn-sm" ng-show="appInfo.isw" ng-click="saveConfig()">Save</button>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>

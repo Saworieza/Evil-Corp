@@ -1,0 +1,255 @@
+<div class="content-header b-b">
+    <h1><i class="fa fa-user"></i> {{'MY_PROFILE' | translate}}</h1>
+</div>
+<div class="content-body" ng-cloak>
+    <div class="col-md-2">
+        <div class='side-panel'>
+
+            <ul>
+                <li class='side-menu' >
+                    <a href='javascript:void(0)' ng-click="scrollTo('info')">{{'PERSONAL_INFORMATION' | translate}}</a>
+                </li>
+                <li class='side-menu'>
+                    <a href='javascript:void(0)' ng-click="scrollTo('password')">{{'PASSWORD' | translate}}</a>
+                </li>
+                <li class='side-menu'>
+                    <a href='javascript:void(0)' ng-click="scrollTo('settings')">{{'NOTIFICATIONS' | translate}}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-10">
+       <div class="panel panel-stream" >
+           <h5 class='profile-title'>Avatar</h5>
+           <form class="form-horizontal" role="form">
+               <div class="form-group">
+                   <label class="col-sm-2 control-label">&nbsp;</label>
+                   <div class="col-sm-2">
+                       <img id='avatarImg' ng-src="{{avatar}}" style="width:100px; height:100px">
+                   </div>
+               </div>
+               <div class="form-group">
+                   <label class="col-sm-2 control-label">&nbsp;</label>
+                   <div class="col-sm-5">
+                       <input id="photoEditor" type="file" accept="image/*" ng-file-select="onFileSelect($files)" style="position:absolute;left:-10000px;top:-10000px;">
+                       <button class='btn btn-xs btn-gray' style='font-size:12px' ng-click="photoClick()">
+                           <i class='fa fa-upload'></i> {{'UPDATE_PHOTO' | translate}}
+                       </button>
+                       <span us-spinner="{width:2, length:2, shadow:on, color:'#000', hwaccel:on,radius:5}" spinner-key="avatarSpinner"></span>
+                   </div>
+               </div>
+           </form>
+           <h5 id="info" class='profile-title'>{{'PERSONAL_INFORMATION' | translate}}</h5>
+           <form class="form-horizontal" role="form" style="padding: 5px">
+               <div class="form-group">
+                   <label class="col-sm-2 control-label">{{'FULL_NAME' | translate}}</label>
+                   <div class="col-sm-3">
+                       <input type="text" ng-model="profile.full_name" class="form-control">
+                       <div class="inline-error">{{errors['full_name']}}</div>
+                   </div>
+               </div>
+               <div class="form-group">
+                   <label class="col-sm-2 control-label">{{'E_MAIL' | translate}}</label>
+                   <div class="col-sm-3">
+                       <input type="text" ng-model="profile.email" class="form-control">
+                       <input type="checkbox" ng-model="profile.showemail" ><small>&nbsp;{{'SHOW_MY_E_MAIL_TO_OTHER_MEMBERS' | translate}}</small>
+                       <div class="inline-error">{{errors['email']}}</div>
+                   </div>
+               </div>
+               <div class="form-group">
+                   <label class="col-sm-2 control-label">{{'ORGANIZATION_OR_DEPT' | translate}}</label>
+                   <div class="col-sm-3">
+                       <input type="text" ng-model="profile.organization" class="form-control">
+                   </div>
+               </div>
+               <div class="form-group">
+                   <label class="col-sm-2 control-label">{{'POSITION' | translate}}</label>
+                   <div class="col-sm-3">
+                       <input type="text" ng-model="profile.position" class="form-control">
+                   </div>
+               </div>
+               <div class="form-group">
+                   <label class="col-sm-2 control-label">{{'PHONE' | translate}}</label>
+                   <div class="col-sm-3">
+                       <input type="text" ng-model="profile.phone" class="form-control">
+                   </div>
+               </div>
+
+
+               <div class="form-group" ng-if="profileFields.facebook || profileFields.twitter">
+                   <label class="col-sm-2 control-label">&nbsp;</label>
+                   <div class="col-sm-3" ng-if="profileFields.facebook">
+                       <div class= 'input-group'>
+                           <span class="input-group-addon"><i style="width:10px; font-size:15px" class="fa fa-facebook fa-fw"></i></span>
+                           <input placeholder='Facebook' type="text" ng-model="profile.facebook" class="form-control">
+                       </div>
+                   </div>
+                   <div class="col-sm-3" ng-if="profileFields.twitter">
+                       <div class= 'input-group'>
+                           <span class="input-group-addon"><i style="width:10px; font-size:15px" class="fa fa-twitter fa-fw"></i></span>
+                           <input placeholder='Twitter' type="text" ng-model="profile.twitter" class="form-control">
+                       </div>
+                   </div>
+               </div>
+               <div class="form-group" ng-if="profileFields.google || profileFields.linkedin">
+                   <label class="col-sm-2 control-label">&nbsp;</label>
+                   <div class="col-sm-3" ng-if="profileFields.google">
+                       <div class= 'input-group'>
+                           <span class="input-group-addon"><i style="width:10px; font-size:15px" class="fa fa-google-plus-square fa-fw"></i></span>
+                           <input placeholder='Google+' type="text" ng-model="profile.googleplus" class="form-control">
+                       </div>
+                   </div>
+                   <div class="col-sm-3" ng-if="profileFields.linkedin">
+                       <div class= 'input-group'>
+                           <span class="input-group-addon"><i style="width:10px; font-size:15px" class="fa fa-linkedin fa-fw"></i></span>
+                           <input placeholder='LinkedIn' type="text" ng-model="profile.linkedin" class="form-control">
+                       </div>
+                   </div>
+               </div>
+               <div class="form-group" ng-if="profileFields.skype || profileFields.github">
+                   <label class="col-sm-2 control-label">&nbsp;</label>
+                   <div class="col-sm-3" ng-if="profileFields.skype">
+                       <div class= 'input-group'>
+                           <span class="input-group-addon"><i style="width:10px; font-size:15px" class="fa fa-skype fa-fw"></i></span>
+                           <input placeholder='Skype' type="text" ng-model="profile.skype" class="form-control">
+                       </div>
+                   </div>
+                   <div class="col-sm-3" ng-if="profileFields.github">
+                       <div class= 'input-group'>
+                           <span class="input-group-addon"><i style="width:10px; font-size:15px" class="fa fa-github fa-fw"></i></span>
+                           <input placeholder='GitHub' type="text" ng-model="profile.github" class="form-control">
+                       </div>
+                   </div>
+               </div>
+               <div class="form-group" ng-repeat="field in profile.custom_fields">
+                   <label class="col-sm-2 control-label">{{field.caption}}</label>
+                   <div class="col-sm-6">
+                       <input type="text" ng-model="profile['custom_'+field.name]" class="form-control" ng-if="field.type=='string'">
+                       <input type="text" date-time ng-if="field.type=='date'" ng-model="profile['custom_'+field.name]"  view='date' format='{{dateFormat}}' min-view="date" partial="true" class="form-control">
+
+                       <textarea ng-model="profile['custom_'+field.name]" class="form-control" ng-if="field.type=='text'" rows="5"></textarea>
+                       <select ng-model="profile['custom_'+field.name]" class="form-control" ng-if="field.type=='select'" ng-options="o as o for o in field.options"></select>
+
+                   </div>
+               </div>
+               <div class="form-group">
+                   <label class="col-sm-2 control-label">&nbsp;</label>
+                   <div class="col-sm-5">
+                       <button class='btn btn-xs btn-primary' ng-click="updateProfileClick()">{{'UPDATE_PROFILE' | translate}}</button>
+                   </div>
+               </div>
+           </form>
+           <br>
+
+           <h5 id="password" class='profile-title'>{{'PASSWORD' | translate}}</h5>
+           <form class="form-horizontal" role="form">
+               <div class="form-group">
+                   <label class="col-sm-2 control-label">{{'OLD_PASSWORD' | translate}}</label>
+                   <div class="col-sm-2">
+                       <input type="password" ng-model="password.old" class="form-control">
+
+                   </div>
+               </div>
+               <div class="form-group">
+                   <label class="col-sm-2 control-label">{{'NEW_PASSWORD' | translate}}</label>
+                   <div class="col-sm-2">
+                       <input type="password" ng-model="password.new" class="form-control">
+                       <div class="inline-error">{{errors['password']}}</div>
+
+                   </div>
+               </div>
+               <div class="form-group">
+                   <label class="col-sm-2 control-label">{{'CONFIRM_NEW_PASSWORD' | translate}}</label>
+                   <div class="col-sm-2">
+                       <input type="password" ng-model="password.conf" class="form-control">
+                   </div>
+               </div>
+               <div class="form-group">
+                   <label class="col-sm-2 control-label">&nbsp;</label>
+                   <div class="col-sm-5">
+                       <button class='btn btn-xs btn-primary' ng-click='updatePassword()'>{{'UPDATE_PASSWORD' | translate}}</button>
+                   </div>
+               </div>
+           </form>
+           <br>
+           <h5 id="settings" class='profile-title'>{{'NOTIFICATIONS' | translate}}</h5>
+           <form class="form-horizontal" role="form">
+               <div class="form-group">
+                   <label class="col-sm-2 control-label">&nbsp;</label>
+                   <div class="col-sm-6">
+                       <table class="table">
+
+                           <tr>
+                               <td><strong>{{'EVENT' | translate}}</strong></td>
+                               <td><strong>{{'INTERNAL_MESSAGE' | translate}}</strong></td>
+                               <td><strong>{{'E_MAIL' | translate}}</strong></td>
+                           </tr>
+
+                           <tr >
+                               <td style="vertical-align: middle">{{'NEW_POSTS' | translate}}</td>
+                               <td>
+                                  <select class="form-control" ng-model="profile.notif_post">
+                                      <option value="0">{{'NO' | translate}}</option>
+                                      <option value="1">{{'ALL' | translate}}</option>
+                                      <option value="2">{{'ONLY_EVENTS' | translate}}</option>
+                                  </select>
+                               </td>
+                               <td>
+                                   <select class="form-control" ng-model="profile.email_post">
+                                       <option value="0">{{'NO' | translate}}</option>
+                                       <option value="1">{{'ALL' | translate}}</option>
+                                       <option value="2">{{'ONLY_EVENTS' | translate}}</option>
+                                   </select>
+
+                               </td>
+                           </tr>
+
+                           <tr>
+                               <td>{{'COMMENTS_ON_MY_POSTS' | translate}}</td>
+                               <td><input type="checkbox" ng-model="profile.notif_content" ></td>
+                               <td><input type="checkbox" ng-model="profile.email_content"></td>
+                           </tr>
+                           <tr>
+                               <td>{{'COMMENTS_ON_MY_STARRED_POSTS' | translate}}</td>
+                               <td><input type="checkbox"  ng-model="profile.notif_content_starred"></td>
+                               <td><input type="checkbox"  ng-model="profile.email_content_starred"></td>
+                           </tr>
+                           <tr>
+                               <td>{{'LIKES_ON_MY_POSTS_COMMENTS' | translate}}</td>
+                               <td><input type="checkbox"  ng-model="profile.notif_like"></td>
+                               <td><input type="checkbox"  ng-model="profile.email_like"></td>
+                           </tr>
+                           <tr>
+                               <td>{{'MENTIONS' | translate}}</td>
+                               <td><input type="checkbox"  ng-model="profile.notif_mention"></td>
+                               <td><input type="checkbox"  ng-model="profile.email_mention"></td>
+                           </tr>
+                           <tr>
+                               <td>{{'INVITATION_TO_A_SPACE' | translate}}</td>
+                               <td><input type="checkbox"  ng-model="profile.notif_invite"></td>
+                               <td><input type="checkbox"  ng-model="profile.email_invite"></td>
+                           </tr>
+                           <tr>
+                               <td>{{'PRIVATE_MESSAGE' | translate}}</td>
+                               <td>&nbsp;</td>
+                               <td><input type="checkbox" ng-model="profile.email_private_msg"></td>
+                           </tr>
+
+                       </table>
+                   </div>
+               </div>
+               <div class="form-group">
+                   <label class="col-sm-2 control-label">&nbsp;</label>
+                   <div class="col-sm-5">
+                       <button class='btn btn-xs btn-primary' ng-click="updateSettingsClick()">{{'UPDATE_SETTINGS' | translate}}</button>
+                   </div>
+               </div>
+           </form>
+           <br>
+           <br>
+       </div>
+    </div>
+</div>
+
+
+

@@ -1,0 +1,235 @@
+<div class="content-body " ng-cloak>
+
+    <div class="col-md-2" bindonce>
+        <div class="side-panel">
+            <p id="space-description">{{currentSpace.description()}}</p>
+        </div>
+        <div class="side-panel">
+            <h5>{{'VIEW' | translate}}</h5>
+            <div class="m-b">
+                <button class="btn btn-xxs btn-first" ng-class="filterIndex == 0 ? 'btn-info': 'btn-white'" ng-click="filterClick(0)">{{'ALL' | translate}}</button>
+                <button class="btn btn-xxs btn-inside" ng-class="filterIndex == 1 ? 'btn-info': 'btn-white'" ng-click="filterClick(1)" bs-tooltip="'{{'STARRED' | translate}}'"><i class="fa fa-star fa-fw"></i></button>
+                <button class="btn btn-xxs btn-inside" ng-class="filterIndex == 2 ? 'btn-info': 'btn-white'" ng-click="filterClick(2)" bs-tooltip="'{{'MESSAGES' | translate}}'"><i class="fa fa-comment fa-fw"></i></button>
+                <button class="btn btn-xxs btn-inside" ng-class="filterIndex == 3 ? 'btn-info': 'btn-white'" ng-click="filterClick(3)" bs-tooltip="'{{'LINKS' | translate}}'"><i class="fa fa-link fa-fw"></i></button>
+                <button class="btn btn-xxs btn-inside" ng-class="filterIndex == 4 ? 'btn-info': 'btn-white'" ng-click="filterClick(4)" bs-tooltip="'{{'TABLES' | translate}}'"><i class="fa fa-table fa-fw"></i></button>
+                <button class="btn btn-xxs btn-inside" ng-class="filterIndex == 5 ? 'btn-info': 'btn-white'" ng-click="filterClick(5)" bs-tooltip="'{{'CHARTS' | translate}}'"><i class="fa fa-bar-chart fa-fw"></i></button>
+                <button class="btn btn-xxs btn-inside" ng-class="filterIndex == 6 ? 'btn-info': 'btn-white'" ng-click="filterClick(6)" bs-tooltip="'{{'POLLS' | translate}}'"><i class="fa fa-check-square fa-fw"></i></button>
+                <button class="btn btn-xxs btn-inside" ng-class="filterIndex == 7 ? 'btn-info': 'btn-white'" ng-click="filterClick(7)" bs-tooltip="'{{'EVENTS' | translate}}'"><i class="fa fa-calendar fa-fw"></i></button>
+                <button class="btn btn-xxs btn-last " ng-class="filterIndex == 8 ? 'btn-info': 'btn-white'" ng-click="filterClick(8)" bs-tooltip="'{{'LOCATIONS' | translate}}'"><i class="fa fa-map-marker fa-fw"></i></button>
+            </div>
+        </div>
+
+        <div class="side-panel">
+            <h5>{{'TAGS' | translate}}</h5>
+            <ul class="tag-list">
+                <li ng-class="filterTag == tag.id ? 'label-tag-selected' : 'label-tag'" ng-repeat="tag in currentSpace.tags() | limitTo: limitTags">
+                    <a href="javascript:void(0)" ng-click="filterTagClick(tag.id)">{{tag.tag}}</a>
+                </li>
+
+            </ul>
+            <div class="clearfix"></div>
+            <div ng-show="limitTags < currentSpace.tags().length">
+                <a href="javascript:void(0)" ng-click="viewAllTagsClick()"><small>{{'ALL_TAGS' | translate}}</small></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="side-panel">
+            <h5>{{'ACTIONS' | translate}}</h5>
+            <div ng-if="currentSpace.role()==3">
+                <a href="javascript:void(0)" class="btn btn-xs btn-link" ng-click="inviteClick()">
+                    {{'INVITE_PEOPLE' | translate}}
+                </a>
+            </div>
+            <div ng-if="!currentSpace.isDefault()">
+                <a href="javascript:void(0)" class="btn btn-xs btn-link"
+                    data-template="partials/pop-quit.html" container='body' data-animation="am-fade" bs-popover>
+                    {{'QUIT_FROM_THIS_SPACE' | translate}}
+                </a>
+            </div>
+
+        </div>
+    </div> <!--End sidebar -->
+
+    <div class="col-md-10 col-lg-7">
+        <div class="panel  panel-stream" style="z-index:1001">
+            <div class="collapse in">
+                <div class="block pad10" >
+
+
+                    <div class="clearfix b-sep">
+
+                        <a href="javascript:void(0)" ng-click='shareTypeClick(0)' class="btn btn-xs btn-post-type btn-rnd"
+                           ng-class="shareType == 0 ? 'btn-info' : 'btn-link'"><i class="fa fa-comment"></i><span class='icon-text'>&nbsp;{{'MESSAGE' | translate}}</span></a>
+
+                        <a href="javascript:void(0)" ng-click='shareTypeClick(1)' class="btn btn-xs btn-post-type"
+                           ng-class="shareType == 1 ? 'btn-info' : 'btn-link'"><i class="fa fa-link"></i><span class='icon-text'>&nbsp;{{'LINK' | translate}}</span></a>
+
+                        <a href="javascript:void(0)" ng-click='shareTypeClick(2)' class="btn btn-xs btn-post-type"
+                           ng-class="shareType == 2 ? 'btn-info' : 'btn-link'"><i class="fa fa-table"></i><span class="icon-text">&nbsp;{{'TABLE' | translate}}</span></a>
+
+                        <a href="javascript:void(0)" ng-click='shareTypeClick(3)' class="btn btn-xs btn-post-type"
+                           ng-class="shareType == 3 ? 'btn-info' : 'btn-link'"><i class="fa fa-bar-chart-o"></i><span class="icon-text">&nbsp;{{'CHART' | translate}}</span></a>
+
+                        <a href="javascript:void(0)" ng-click='shareTypeClick(4)' class="btn btn-xs btn-post-type"
+                           ng-class="shareType == 4 ? 'btn-info' : 'btn-link'"><i class="fa fa-check-square"></i><span class="icon-text">&nbsp;{{'POLL' | translate}}</span>
+                        </a>
+                        <a href="javascript:void(0)" ng-click='shareTypeClick(5)' class="btn btn-xs btn-post-type"
+                           ng-class="shareType == 5 ? 'btn-info' : 'btn-link'"><i class="fa fa-calendar "></i><span class="icon-text">&nbsp;{{'EVENT' | translate}}</span>
+                        </a>
+                        <a href="javascript:void(0)" ng-click='shareTypeClick(6)' class="btn btn-xs btn-post-type"
+                           ng-class="shareType == 6 ? 'btn-info' : 'btn-link'"><i class="fa fa-map-marker "></i><span class="icon-text">&nbsp;{{'LOCATION' | translate}}</span>
+                        </a>
+
+
+                    </div>
+
+                    <textarea mentio="" mentio-trigger-char="'@'" mentio-items="people"
+                              mentio-template-url="/people-mentions.tpl"
+                              mentio-search="searchPeople(term)"
+                              mentio-select="getPeopleTextRaw(item)"
+                              mentio-require-leading-space="true"
+                              mentio-typed-term="typedTerm2"
+                              class="elastic-animate form-control msd-elastic" placeholder="{{'SHARE_SOMETHING' | translate}}"
+                              mentio-id="'comment_text_area'"
+                              ng-model="newContent.content_text"
+                              rows = "2"
+                              ng-trim="false" rows="6" autocomplete="off">
+                    </textarea>
+
+                    <mentio-menu
+                            mentio-for="'comment_text_area'"
+                            mentio-trigger-char="'#'"
+                            mentio-items="products"
+                            mentio-template-url="/tag-mentions.tpl"
+                            mentio-search="searchTag(term)"
+                            mentio-select="getTagText(item)">
+                    </mentio-menu>
+
+                    <p class='inline-error' ng-show="errors.content_text">{{errors.content_text | joinBy:'.'}}</p>
+
+                    <div style="height:7px"></div>
+                    <div ng-show='shareType==1' lkr-link-editor data='newContent.link' errors="errors"></div>
+                    <div ng-show='shareType==2' lkr-table-editor  data='newContent.table'></div>
+                    <div ng-show='shareType==3' lkr-chart-editor  data='newContent.chart'></div>
+                    <div ng-show='shareType==4' lkr-poll-editor  data='newContent.poll'></div>
+                    <div ng-show='shareType==5' lkr-event-editor data='newContent.event' errors="errors"></div>
+                    <div ng-show='shareType==6' lkr-location-editor data='newContent.location' errors="errors"></div>
+                </div>
+
+                <div class="" style='background-color:#F5F5F5; padding:10px 0px; border-top: 1px solid #DCDDDF; '>
+                    <div class="row" style="margin-bottom:2px">
+                        <div class='col-md-10 col-sm-6'>
+                            <div lkr-file-editor file-accept='*' data='newContent.files' file-editor-id = '0' style="width:90%" ></div>
+                        </div>
+                        <div class="col-md-2 col-sm-6">
+                            <button  ng-click="postClick()" class="btn btn-sm btn-primary pull-right">
+                                {{'POST' | translate}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div ng-show='waiting' class="" style='height:50px;text-align: center'>
+            <!--<i class="fa fa-spinner fa-spin fa-2x"></i>-->
+        </div>
+
+        <div >
+            <div ng-show='newPosts' class="poolbox">
+                <a href='javascript:void(0)' ng-click='poolClick()'>{{'THERE_ARE_NEW_MESSAGES' | translate}}</a>
+            </div>
+
+            <div  class="panel panel-stream animated fadeInDown" style='z-index:{{1000-$index}}' ng-repeat="content in stream track by content.id" bindonce>
+                <div class="am-slide-bottom" lkr-content content="content" has-tasks="currentSpace.tasks()" on-delete="deleteClick(contentId)"></div>
+            </div>
+        </div>
+        <div ng-show="busy" class="waiting-indicator"><i class="fa fa-spinner"></i>&nbsp;{{'LOADING' | translate}}</div>
+        <div infinite-scroll="paging()" infinite-scroll-distance="0" infinite-scroll-disabled="busy">
+        </div>
+        <br><br>
+
+    </div>
+
+    <div class='visible-lg col-lg-3' bindonce>
+        <div class="panel panel-stream" ng-show='events.length'>
+            <div class="row block" style="padding:5px 10px">
+                <h5 class='side-title title-right'>{{'UPCOMING_EVENTS' | translate}}</h5>
+                <div ng-repeat="event in events" style="margin-bottom:2px !important ">
+                    <div class="row" style="padding-bootm:2px">
+                        <div class="pull-left" style="margin-left:3px">
+                            <div class="date-sm">
+                                <p bo-text='formatter.formatDay(event.start_date)'></p>
+                                <span class='date-month' bo-text='formatter.formatMonth(event.start_date)'></span>
+                            </div>
+                        </div>
+                        <div class="pull-left" style="margin-left:10px; margin-top:-5px">
+                            <h6 style="font-weight:400; margin-top:4px;margin-bottom:3px" bo-text="event.type">&nbsp;</h6>
+                            <h6 style="font-weight:300; margin-top:0px" class="ng-binding" ng-if= "!event.all_day" bo-text='formatter.formatDateTime(event.start_date)'></h6>
+                            <h6 style="font-weight:300; margin-top:0px" class="ng-binding" ng-if= "event.all_day" bo-text='formatter.formatDate(event.start_date)'></h6>
+                            <a href='#/post/{{event.id}}'><p style="color:#56C0E0;margin:0px;position:relative; top:-10px"><small>{{'VIEW_EVENT' | translate}}</small></p></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-stream " ng-show="latestFiles.length > 0">
+            <div class="row block" style="padding:5px 10px">
+                <h5 class='side-title title-right'>{{'LATEST_FILES' | translate}}</h5>
+
+                <ul class="list-group">
+                    <li class='file-item'  ng-repeat="file in latestFiles">
+                        <span class="pull-left">
+                            <a href="{{getUrlToFile(file.code)}}">
+                                <img class="img-responsive" ng-src="{{file.icon}}">
+                            </a>
+                        </span>
+                        <div>
+                            <a bo-href="getUrlToFile(file.code)" style='color:#222; font-size:12px; font-weight: 400'>{{file.file_name}}</a>
+                            <br>
+                            <span bo-text="formatDesc(file.description,file.file_size,file.file_date)"></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="panel panel-stream ">
+            <div class="row block" style="padding:5px 10px">
+                <h5 class='side-title title-right'>{{'MEMBERS' | translate}}</h5>
+                <ul class='avatar-list'>
+                    <li ng-repeat="member in currentSpace.members()" class='avatar-item' ng-if="!hm || member.role < 3">
+
+                        <a href= "javascript:void(0)" ng-click='peopleClick(member.id)'>
+                            <img class="img-responsive" style='width:40px;' html="true" bs-tooltip data-title='{{getMemberTooltip(member)}}' bo-src="getAvatar(member.id)">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/ng-template" id="/tag-mentions.tpl">
+    <ul class="list-group user-search">
+        <li mentio-menu-item="item" ng-repeat="item in items" class="list-group-item">
+            <span class="text-primary">{{item.tag | words:5}}</span>
+        </li>
+    </ul>
+</script>
+
+<script type="text/ng-template" id="/people-mentions.tpl">
+    <ul class="list-group user-search" >
+        <li mentio-menu-item="person" ng-repeat="person in items" class="list-group-item">
+            <img ng-src="{{person.imageUrl}}" class="user-photo">
+            <span class="text-primary" ng-bind-html="person.full_name | mentioHighlight:typedTerm:'menu-highlighted' | unsafe"></span>
+
+        </li>
+    </ul>
+</script>
+
+
+
+

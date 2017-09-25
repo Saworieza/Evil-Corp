@@ -1,0 +1,33 @@
+<div class="aside aside-chat-color"  tabindex="-1" role="dialog">
+    <div class="aside-header" style="padding: 5px">
+        <button type="button" class="close" ng-click="$hide()">&times;</button>
+    </div>
+
+     <div class="aside-chat-panel" id="chatpanel">
+         <div class="chat">
+           <div ng-repeat="msg in chat">
+            <div class="bubble"  ng-class="msg.me == true ? 'me' : 'you'">
+                <div>
+                    <span style="font-size: 12px; color:#666; font-weight: bold">{{msg.full_name}}</span>
+                    <span style="font-size: 10px; color:#aaa">{{formatter.formatDateCalendarUtc(msg.created_at)}}</span>
+                </div>
+                <div style="font-size: 12px; line-height: 15px">{{msg.message}}</div>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+         </div>
+     </div>
+    <div class="chat-footer" style="z-index: 2000">
+        <textarea class="form-control "
+                  rows="2"
+            placeholder="{{'YOUR_MESSAGE' | translate}}"
+            ng-model="chatMsg.text"
+            ng-enter="chatSend()">
+        </textarea>
+    </div>
+
+</div>
+
+
+
+

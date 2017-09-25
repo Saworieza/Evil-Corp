@@ -1,0 +1,18 @@
+<div class="popover">
+    <div class="arrow"></div>
+    <h3 class="popover-title">{{'SHARE_THIS_POST' | translate}}</h3>
+    <div class="popover-content" ng-init="current='!'+$parent.content.space_id">
+        <select class="form-control" ng-model="selected">
+
+            <option ng-repeat="item in $parent.spaceFactory.spaceList() | filter: {active:1, id: current}" value="{{item.code}}">
+                {{item.title}}
+            </option>
+        </select>
+        <br>
+
+        <button class="btn btn-sm btn-primary" ng-click="$hide(); $parent.sharePostClick(selected);">{{'OK' | translate}}</button>
+        &nbsp;
+        <button class="btn btn-sm btn-default" ng-click="$hide()">{{'CANCEL' | translate}}</button>
+    </div>
+
+</div>

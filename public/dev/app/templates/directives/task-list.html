@@ -1,0 +1,57 @@
+<div>
+    <div style="margin-bottom: 5px">
+        <!--<a class="btn btn-xs btn-info" href="javascript:void(0)" ng-click="newTaskClick()">New task</a>-->
+        <span>&nbsp;</span>
+        <span class="btn-group pull-right">
+            <a class="btn btn-xs" ng-class="list.field == '' ? 'btn-info' : 'btn-white'" ng-click="list.field=''">{{'NO_GROUPING' | translate}}</a>
+            <a class="btn btn-xs" ng-class="list.field == 'due_date_group' ? 'btn-info' : 'btn-white'" ng-click="list.field='due_date_group'">{{'DUE_DATE' | translate}}</a>
+            <a ng-if="!spaceCode" class="btn btn-xs" ng-class="list.field == 'space' ? 'btn-info' : 'btn-white'" ng-click="list.field='space'">{{'SPACE' | translate}}</a>
+            <a class="btn btn-xs" ng-class="list.field == 'state' ? 'btn-info' : 'btn-white'" ng-click="list.field='state'">{{'STATE' | translate}}</a>
+            <a class="btn btn-xs" ng-class="list.field == 'priority' ? 'btn-info' : 'btn-white'" ng-click="list.field='priority'">{{'PRIORITY' | translate}}</a>
+
+        </span>
+    </div>
+    <div class="padnel-group" ng-model="newTaskPanel" bs-collapse start-collapsed="true">
+        <div class="panesl panel-default">
+            <div class="panel-collapse" bs-collapse-target>
+                <div class="panel-body">
+                    <div lkr-task task="newTask" content-id="{{contentId}}" new-record>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-group" ng-model='taskListPanel' start-collapsed="true" bs-collapse>
+        <div ng-repeat="task in tasks | filter: filter | orderBy:list.field | groupBy: list.field">
+
+            <h4 style='margin-top:20px' ng-show="task.group_by_CHANGED">{{getGroupText(task)}}</h4>
+        <div class="task-panel">
+                <div class="task-heading" >
+                        <a bs-collapse-toggle class="task-item">
+                            <span class="icon"><i class="fa state-{{task.state}} fa-fw"></i></span>
+                            <span class="icon priority-{{task.priority}}"><i class="fa fa-star fa-fw"></i> </span>
+                            <span ng-class="task.state > 2 ? 'striket': '' ">
+                                <span class="title">{{task.title}}</span>
+                            </span>
+                            <span ng-if="!spaceCode && task.space" class="assign">@{{task.space}}</span>
+
+                            <span ng-if="!formatter.isMe(task.user_id)" class="creator">{{task.user.full_name}}</span>
+                            <span class="creator" ng-if="task.assignments"><i class="fa fa-long-arrow-right"></i></span>
+                            <span class="assign">{{task.assignments}}</span>
+
+                            <span class="pull-right duedate" ng-if="task.due_date">{{formatter.longDate(task.due_date)}}</span>
+
+                        </a>
+                </div>
+                <div class="panel-collapse" bs-collapse-target>
+                    <div class="panel-body">
+                        <div lkr-task task="task" form-mode="false"></div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

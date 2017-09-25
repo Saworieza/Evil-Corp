@@ -1,0 +1,29 @@
+<div bindonce class="clear">
+    <div class="row" ng-if="hasImages()">
+        <ul class="list-group" style="padding: 4px">
+            <li class ='photo-item thumb' ng-repeat="photo in data| filter: {file_type:'image'}">
+                <a href="{{getUrlToFile(photo.code)}}" data-gallery="gal" data-type='image' data-parent = '.photo-list' data-toggle="lightbox" data-title="{{photo.description}}">
+                     <img width = '100px' class="img-responsive" ng-src="{{getPreviewImg(photo.code)}}" data-title="{{photo.description}}" container="body" bs-tooltip>
+
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div ng-if="hasImages() && hasFiles()">&nbsp;</div>
+
+    <div class="row" ng-if="hasFiles()">
+        <ul class="list-group">
+            <li class='file-item' ng-repeat="file in data| filter: {file_type:'file'}">
+                <span class="pull-left"><a href="{{getUrlToFile(file.code)}}">
+                    <img class="img-responsive" ng-src="{{getPreviewImg(file.code)}}" >
+                </a></span>
+                <div>
+                    <a bo-href="getUrlToFile(file.code)" style='color:#222; font-size:12px; font-weight: 400'>{{file.file_name}}</a>
+                    <br>
+                    <span bo-text="formatDesc(file.description,file.file_size,file.file_date)"></span>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+</div>

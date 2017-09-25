@@ -1,0 +1,220 @@
+<form class="form-horizontal" style="padding: 5px" bindonce>
+
+    <div class="form-group" ng-if="task.content_id">
+        <label class="col-md-2 control-label"><strong>{{'POST' | translate}}</strong></label>
+        <div class="col-md-6">
+            <label  class="col-md-8 control-label field-editor-value">
+                <a ng-if="!noComments" href="#/post/{{task.content_id}}">{{task.content_id}}</a>
+                <p ng-if="noComments">{{task.content_id}}</p>
+            </label>
+        </div>
+    </div>
+
+    <!-- TITLE -->
+    <div class="form-group">
+        <label class="col-md-2 control-label"><strong>{{'TITLE' | translate}}</strong></label>
+        <div class="col-md-6" ng-if="edit.editing=='title' || edit.newRecord ">
+            <div ng-class="edit.newRecord ?  '' : 'input-group'">
+                <input ng-if='edit.newRecord' ng-keypress="edit.error['title']=null" ng-model="task.title" ng-keypress="error = ''" type="text" placeholder="{{placeholder}}" class="form-control input-md">
+                <input ng-if='!edit.newRecord' ng-keypress="edit.error['title']=null" ng-model="edit.task.title" ng-keypress="error = ''" type="text" placeholder="{{placeholder}}" class="form-control input-md">
+
+                <span class="input-group-btn" ng-if="! edit.newRecord">
+                    <button type="button" class="btn btn-default" ng-click='updateField("title")'><i class="fa fa-check"></i></button>
+                    <button type="button" class="btn btn-default" ng-click="edit.editing='' "><i class="fa fa-times"></i></button>
+                </span>
+            </div>
+            <span class="inline-error">{{edit.error['title']}}</span>
+        </div>
+        <div class="col-md-6" ng-if="edit.editing != 'title' && !edit.newRecord">
+            <label ng-if='edit.owner' class="col-md-8 control-label field-editor-value">
+                <a ng-click="editClick('title')">{{task.title || ('TITLE' | translate)}}</a>
+            </label>
+            <label ng-if='!edit.owner' class="col-md-8 control-label field-editor-value">{{task.title || ('TITLE' | translate)}}</label>
+        </div>
+    </div>
+
+    <!-- DESCRIPTION -->
+    <div class="form-group">
+        <label class="col-md-2 control-label"><strong>{{'DESCRIPTION' | translate}}</strong></label>
+        <div class="col-md-6" ng-if="edit.editing=='description' || edit.newRecord ">
+            <div ng-class="edit.newRecord ?  '' : 'input-group'">
+                <textarea ng-if='edit.newRecord'
+                          ng-keypress="edit.error['description']=null"
+                          ng-model="task.description"
+                          type="text"
+                          class="form-control input-md">
+                </textarea>
+                <textarea ng-if='!edit.newRecord'
+                          ng-keypress="edit.error['description']=null"
+                          ng-model="edit.task.description"
+                          class="form-control input-md">
+                </textarea>
+
+                <div class="input-group-btn" ng-if="! edit.newRecord" style="vertical-align: top;">
+                    <button type="button" class="btn btn-default" ng-click='updateField("description")'><i class="fa fa-check"></i></button>
+                    <button type="button" class="btn btn-default" ng-click="edit.editing='' "><i class="fa fa-times"></i></button>
+                </div>
+            </div>
+            <span class="inline-error">{{edit.error['description']}}</span>
+        </div>
+        <div class="col-md-6" ng-if="edit.editing != 'description' && !edit.newRecord">
+            <label ng-if='edit.owner' class="col-md-12 control-label field-editor-value">
+                <a ng-click="editClick('description')">{{task.description || ('DESCRIPTION' | translate)}}</a>
+            </label>
+            <label ng-if='!edit.owner' class="col-md-12 control-label field-editor-value">{{task.description || ('DESCRIPTION' | translate)}}</label>
+        </div>
+    </div>
+
+    <!-- ASSIGNED TO -->
+    <div class="form-group">
+        <label class="col-md-2 control-label"><strong>{{'ASSIGNED_TO' | translate}}</strong></label>
+        <div class="col-md-6" ng-if="edit.editing=='assigned_to' || edit.newRecord ">
+            <div ng-class="edit.newRecord ?  '' : 'input-group'">
+                <tags-input ng-if='edit.newRecord'
+                            ng-model="task.assigned_to"
+                            display-property="full_name"
+                            placeholder = "{{'USERS' | translate}}"
+                            replace-spaces-with-dashes="false">
+                        <auto-complete source="loadUsers($query)"></auto-complete>
+                </tags-input>
+                <tags-input
+                        ng-if='!edit.newRecord'
+                        ng-model="edit.task.assigned_to"
+                        display-property="full_name"
+                        placeholder = 'Users'
+                        replace-spaces-with-dashes="false">
+
+                    <auto-complete source="loadUsers($query)"></auto-complete>
+                </tags-input>
+
+                <span class="input-group-btn" ng-if="! edit.newRecord">
+                    <button type="button" class="btn btn-default" ng-click='updateField("assigned_to")'><i class="fa fa-check"></i></button>
+                    <button type="button" class="btn btn-default" ng-click="edit.editing='' "><i class="fa fa-times"></i></button>
+                </span>
+            </div>
+            <span class="inline-error">{{edit.error['assigned_to']}}</span>
+        </div>
+        <div class="col-md-6" ng-if="edit.editing != 'assigned_to' && !edit.newRecord">
+            <label ng-if='edit.owner' class="col-md-8 control-label field-editor-value">
+                <a ng-click="editClick('assigned_to')">{{task.assignments || ('ME' | translate)}}</a>
+            </label>
+            <label ng-if='!edit.owner' class="col-md-8 control-label field-editor-value">{{task.assignments || ('ME' | translate)}}</label>
+        </div>
+    </div>
+
+    <!-- DUE DATE -->
+    <div class="form-group">
+        <label class="col-md-2 control-label"><strong>{{'DUE_DATE' | translate}}</strong></label>
+        <div class="col-md-3" ng-if="edit.editing=='due_date' || edit.newRecord ">
+            <div ng-class="edit.newRecord ?  '' : 'input-group'">
+                <input ng-if="edit.newRecord" type="text" autoclose='true' data-container="body" class="form-control" ng-model="task.due_date" name="date" bs-datepicker>
+                <input ng-if="!edit.newRecord" type="text" autoclose='true' data-container="body" class="form-control" ng-model="edit.task.due_date" name="date" bs-datepicker>
+
+                <span class="input-group-btn" ng-if="! edit.newRecord">
+                    <button type="button" class="btn btn-default" ng-click='updateField("due_date")'><i class="fa fa-check"></i></button>
+                    <button type="button" class="btn btn-default" ng-click="edit.editing='' "><i class="fa fa-times"></i></button>
+                </span>
+            </div>
+            <span class="inline-error">{{edit.error['due_date']}}</span>
+        </div>
+        <div class="col-md-6" ng-if="edit.editing != 'due_date' && !edit.newRecord">
+            <label ng-if='edit.owner' class="col-md-8 control-label field-editor-value">
+                <a ng-click="editClick('due_date')">{{formatter.longDate( task.due_date)  || ('NO_DUE_DATE' | translate)}}</a>
+            </label>
+            <label ng-if='!edit.owner && task.due_date' class="col-md-8 control-label field-editor-value">{{formatter.longDate( task.due_date)  || ('NO_DUE_DATE' | translate)}}</label>
+        </div>
+    </div>
+
+    <!-- PRIORITY -->
+    <div class="form-group">
+        <label class="col-md-2 control-label"><strong>{{'PRIORITY' | translate}}</strong></label>
+        <div class="col-md-8" ng-if="edit.editing=='priority' || edit.newRecord ">
+            <div class="btn-group" ng-class="edit.newRecord ?  '' : 'input-group'">
+                <button class="btn btn-xxs" ng-repeat="pr in priorities" style="position: relative; top: 5px;"
+                        ng-class="pr.id==task.priority ? 'btn-info' : 'btn-white' "
+                        ng-click="updateRadio('priority', pr.id)">
+                    <i ng-if="pr.icon" class='fa' ng-class="pr.icon"></i>
+
+                    {{pr.caption}}
+                </button>
+
+            </div>
+            <span class="inline-error">{{edit.error['priority']}}</span>
+        </div>
+        <div class="col-md-6" ng-if="edit.editing != 'priority' && !edit.newRecord">
+            <label ng-if='edit.owner' class="col-md-8 control-label field-editor-value">
+                <a ng-click="editClick('priority')">{{priorities[task.priority].caption || ('NORMAL' | translate)}}</a>
+            </label>
+            <label ng-if='!edit.owner' class="col-md-8 control-label field-editor-value">{{priorities[task.priority].caption || ('NORMAL' | translate)}}</label>
+        </div>
+    </div>
+
+    <!-- STATE -->
+    <div class="form-group">
+        <label class="col-md-2 control-label"><strong>{{'STATE' | translate}}</strong></label>
+        <div class="col-md-8" ng-if="edit.editing=='state' || edit.newRecord ">
+            <div class="btn-group" ng-class="edit.newRecord ?  '' : 'input-group'">
+                <button class="btn btn-xxs" ng-repeat="st in states" style="position: relative; top: 5px;"
+                        ng-class="st.id==task.state ? 'btn-info' : 'btn-white' "
+                        ng-click="updateRadio('state',st.id)">
+                    <i ng-if="st.icon" class='fa' ng-class="st.icon"></i>
+                    {{st.caption}}
+                </button>
+
+            </div>
+            <span class="inline-error">{{edit.error['state']}}</span>
+        </div>
+        <div class="col-md-6" ng-if="edit.editing != 'state' && !edit.newRecord">
+            <label  class="col-md-8 control-label field-editor-value">
+                <a ng-click="editClick('state')">{{states[task.state].caption || ''}}</a>
+            </label>
+        </div>
+    </div>
+
+    <div class="form-group" ng-if="!edit.newRecord ">
+        <label class="col-md-2 control-label"><strong>&nbsp;</strong></label>
+        <div class="col-md-8" data='task.attachments' contentid = 'task.id' lkr-file-viewer></div>
+    </div>
+
+    <div class="form-group" ng-if="edit.newRecord ">
+        <label class="col-md-2 control-label"><strong>&nbsp;</strong></label>
+        <div class="col-md-6" style="position: relative; left: -10px; padding-top:10px; padding-bottom: 10px">
+            <div lkr-file-editor file-accept='*' data='task.files' file-editor-id = 'fileEditorId' style="width:90%" ></div>
+        </div>
+    </div>
+
+    <div class="form-group" ng-if="edit.newRecord ">
+        <label class="col-md-2 control-label"><strong>&nbsp;</strong></label>
+        <div class="col-md-8" >
+            <button class="btn btn-info btn-sm" ng-click="postClick()">{{'OK' | translate}}</button>&nbsp;
+            <button class="btn btn-white btn-sm" ng-click="cancelClick()">{{'CANCEL' | translate}}</button>
+
+        </div>
+    </div>
+
+
+    <div class="form-group" ng-if="!edit.newRecord && !noComments">
+        <label class="col-md-2 control-label"><strong>&nbsp;</strong></label>
+        <div class="col-md-8" style="background-color: #F7F7F7; border: 1px solid #e4e4e4;">
+            <div ng-if="!edit.newRecord" lkr-comments comments="task.comments" class-name='task' comment-count="task.comment_count" content-id="task.id" ></div>
+        </div>
+    </div>
+
+    <div class="form-group" ng-if="!edit.newRecord && edit.owner && !noComments" >
+        <label class="col-md-2 control-label"><strong>&nbsp;</strong></label>
+        <div class="col-md-8" >
+
+            <a ng-if="! task.archived" class="btn btn-xs btn-white" title="{{'ARCHIVE_THIS_TASK' | translate}}"
+               data-template="partials/pop-task-archive.html" container='body' data-animation="am-fade" bs-popover>{{'ARCHIVE_TASK' | translate}}
+            </a>
+            <a ng-if="task.archived" class="btn btn-xs btn-white" title="{{'UNARCHIVE_THIS_TASK' | translate}}"
+               data-template="partials/pop-task-archive.html" container='body' data-animation="am-fade" bs-popover>{{'UNARCHIVE_TASK' | translate}}
+            </a>
+
+            <a class="btn btn-xs btn-white " title="{{'DELETE_THIS_TASK' | translate}}"
+               data-template="partials/pop-delete.html" container='body' data-animation="am-fade" bs-popover>{{'DELETE_TASK' | translate}}
+            </a>
+
+        </div>
+    </div>
+</form>

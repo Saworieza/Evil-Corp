@@ -1,0 +1,10 @@
+<div class="popover">
+    <div class="arrow"></div>
+    <h3 class="popover-title">{{'REMOVE_OR_SUSPEND_THIS_USER' | translate}}?</h3>
+    <div class="popover-content">
+        <button class="btn btn-sm btn-danger" ng-click="$hide(); updateStateClick(user.id,0)">{{'OK' | translate}}</button>
+        &nbsp;
+        <button class="btn btn-sm btn-default" ng-click="$hide()">{{'CANCEL' | translate}}</button>
+    </div>
+
+</div>

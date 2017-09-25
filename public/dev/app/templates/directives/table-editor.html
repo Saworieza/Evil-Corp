@@ -1,0 +1,34 @@
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <td class="td-nb" ng-repeat="col in tableData.cols"><strong>
+                    <input type='text' class="form-control form-control-bold" ng-model='col.title'>
+                </strong></td>
+                <td class="td-nb" width="110px">
+                    <div class='btn-group'>
+                        <button class='btn btn-white btn-sm' data-toggle="tooltip" data-placement="bottom" title="{{'ADD_COLUMN' | translate}}" ng-click='newColClick()'><i class='fa fa-plus'></i></button>
+                        <button class='btn btn-white btn-sm' data-toggle="tooltip" data-placement="bottom" title="{{'REMOVE_COLUMN' | translate}}" ng-click='delColClick()'><i class='fa fa-minus'></i></button>
+                    </div>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="td-nb" ng-repeat="row in tableData.rows">
+                <td class="td-nb" ng-repeat="col in tableData.cols">
+                    <input class="form-control" ng-model='row[$index]'>
+                </td>
+                <td class="td-nb">
+                    <button ng-show='$index<tableData.rows.length-1' data-toggle="tooltip" data-placement="bottom" title="{{'REMOVE_ROW' | translate}}" ng-click='delRowClick($index)' class="btn btn-white btn-sm"><i class='fa fa-minus'></i></button>
+                    <button ng-show='$index==tableData.rows.length-1' data-toggle="tooltip" data-placement="bottom" title="{{'ADD_ROW' | translate}}" ng-click='newRowClick()' class="btn btn-white btn-sm"><i class='fa fa-plus'></i></button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class='form-group' style='margin-left:5px; margin-top:10px'>
+        <button class='btn btn-white btn-sm' ng-click='showPaste=!showPaste'><i class='fa fa-paste'></i> {{'PASTE_FROM_SPREADSHEET' | translate}}</button>
+        <div style="height:4px"></div>
+        <textarea ng-show='showPaste' class='form-control' ng-paste='handlePaste($event)' ng-model='pasteData' placeholder="{{'PASTE_HERE' | translate}}"></textarea>
+
+    </div>
+</div>

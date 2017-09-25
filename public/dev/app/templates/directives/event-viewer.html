@@ -1,0 +1,75 @@
+<div class='row' style="padding:10px" bindonce>
+    <div ng-if="! editing">
+        <div class="pull-left" style="margin-left:10px; margin-bottom:15px">
+            <div class="date">
+                <p>{{day}} <span>{{month}}</span></p>
+            </div>
+       </div>
+       <div class='pull-left' style='margin-left:20px; margin-top:0px'>
+            <h4 ng-show='data.type' style='font-weight:300; margin-top:0px; margin-bottom:8px' bo-text="data.type"></h4>
+            <h6 ng-if='fullDate != endDate' style='font-weight:300; margin:0px 0px 4px'>{{'START' | translate}}: {{fullDate}}</h6>
+            <h6 ng-if='fullDate != endDate' style='font-weight:300; margin:0px 0px 4px;'>{{'END' | translate}} : {{endDate}}</h6>
+            <h6 ng-if='fullDate == endDate' style='font-weight:300; margin:0px 0px 4px;'>{{fullDate}}</h6>
+            <h6 style='font-weight:300; margin:0px 0px 4px' ng-show='data.all_day'>{{'ALL_DAY' | translate}}</h6>
+            <h6>
+                <div class="btn-groudp">
+                    <button class="btn btn-xxs r-s" ng-class="myAtt==2 ? 'btn-default' : 'btn-white'" bs-tooltip html="true" data-title="{{att.2.users}}" ng-click= "assistClick(2)">{{'ATTENDING' | translate}}: {{att.2.total}}</button>
+                    <button class="btn btn-xxs r-s" ng-class="myAtt==1 ? 'btn-default' : 'btn-white'" bs-tooltip html="true" data-title="{{att.1.users}}" ng-click= "assistClick(1)">{{'MAYBE_ATTENDING' | translate}}: {{att.1.total}}</button>
+                    <button class="btn btn-xxs r-s" ng-class="myAtt==0 ? 'btn-default' : 'btn-white'" bs-tooltip html="true" data-title="{{att.0.users}}" ng-click= "assistClick(0)">{{'NOT_ATTENDING' | translate}}: {{att.0.total}}</button>
+
+                </div>
+                <div ng-if="formatter.isMe(author)">
+                    <div style="height: 10px"> </div>
+                    <a href="javascript:void(0)" ng-click="editClick()">{{'EDIT_EVENT_DATE' | translate}}</a>
+
+                </div>
+
+            </h6>
+        </div>
+    </div>
+    <div ng-if="editing">
+        <form class="form-horizontal" role="form">
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">{{'START' | translate}}</label>
+                <div class="col-sm-4">
+
+                    <input type="text" date-time=""  ng-if='!new.all_day'  ng-model="new.start_date"  view='date' format='{{dateTimeFormat}}' min-view="minutes" partial="true" class="form-control">
+
+                    <input type="text" date-time=""  ng-if='new.all_day' ng-model="new.start_date"  view='date' format='{{dateFormat}}' min-view="date" partial="true" class="form-control">
+
+                    <p class='inline-error' ng-show="errors['event.start_date']">{{errors['event.start_date'] | joinBy:'.'}}</p>
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">{{'END' | translate}}</label>
+                <div class="col-sm-4">
+                    <input type="text" date-time="" ng-if='new.all_day' ng-model="new.end_date"  view='date' format='{{dateFormat}}' min-view="date" partial="true" class="form-control">
+                    <input type="text" date-time="" ng-if='!new.all_day' ng-model="new.end_date"  view='date' format='{{dateTimeFormat}}' min-view="minutes" partial="true" class="form-control">
+                    <p class='inline-error' ng-show="errors['event.end_date']">{{errors['event.end_date'] | joinBy:'.'}}</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">&nbsp;</label>
+                <div class="col-sm-4">
+                    <input type="checkbox" ng-model='new.all_day'><small>&nbsp;{{'ALL_DAY' | translate}}</small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">&nbsp;</label>
+                <div class="col-sm-4">
+                    <button class="btn btn-sm btn-primary" ng-click="changeOkClick()">Ok</button>&nbsp;
+                    <button class="btn btn-sm btn-white">Cancel</button>
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+
+
+</div>

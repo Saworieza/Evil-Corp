@@ -1,0 +1,44 @@
+<div class="aside bs-docs-aside" tabindex="-1" role="dialog">
+    <div class="aside-dialog">
+        <div class="aside-content">
+            <div class="aside-header">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4 class="aside-title">{{'SPACES' | translate}}</h4>
+            </div>
+            <div class="aside-body">
+                <div class='side-panel'>
+                    <div class="form-group" >
+                        <input type="text" class="form-control" placeholder="{{'SEARCH_FOR_SPACE' | translate}}" ng-model="sp.spaceSearch">
+                    </div>
+                    <ul>
+                        <li ng-repeat="space in spaces | orderBy: 'title' | filter:{title: sp.spaceSearch} | filter: {active:1}" style="border-bottom: 0px solid #ededed; margin-top:10px">
+                            <a href='javascript:void(0)' ng-click="$hide();gotoSpace(space.code);">{{space.title}}
+
+                            <span class="home-space-badge pull-right">
+                                   <i ng-if="space.access=='PR'" class="fa fa-lock fa-fw"></i>
+                                      <i ng-if="space.access=='PU'" class="fa fa-unlock fa-fw"></i>
+                            </span>
+                            </a>
+
+                        </li>
+                    </ul>
+
+                    <div ng-show="(spaces | filter:{active:0}).length" style="font-size:11px; text-transform: uppercase; padding: 10px 10px 0px; color:#666">{{'INACTIVE_SPACES' | translate}}</div>
+                    <ul>
+                        <li ng-repeat="space in spaces | orderBy: 'title' | filter:{title: sp.spaceSearch} | filter: {active:0}" style="border-bottom: 0px solid #ededed; margin-top:10px">
+                            <a href='javascript:void(0)' ng-click="$hide();gotoSpace(space.code);">{{space.title}}
+
+                            <span class="home-space-badge pull-right">
+                                   <i ng-if="space.access=='PR'" class="fa fa-lock fa-fw"></i>
+                                      <i ng-if="space.access=='PU'" class="fa fa-unlock fa-fw"></i>
+                            </span>
+                            </a>
+
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

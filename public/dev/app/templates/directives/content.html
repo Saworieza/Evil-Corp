@@ -1,0 +1,121 @@
+<div class="panel-heading" bindonce>
+    <span class="pull-right" style="font-size: 12px; color:#cccccc"><i class="{{icons[content.class_id]}}"></i>&nbsp;{{content.id}}</span>
+    <img class="thumb-sm avatar pull-left"  ng-src="{{getAvatar(content.user.id)}}">
+    <div style='margin-left:47px; font-weight:400; font-size:14px' >
+        <a href="javascript:void(0)" ng-click="peopleClick()">{{content.user.full_name}}</a>
+        <span ng-if="content.shared_from && content.shared_from.id !== content.user.id" style="color:#777">
+            &nbsp;{{'SHARED_FROM' | translate}}&nbsp;{{content.shared_from.full_name}}</span>
+        <br>
+        <p style="font-weight:400; margin-top:2px; font-size:12px">{{formatter.formatDateCalendarUtc(content.created_at)}}</small></p>
+    </div>
+</div>
+
+<div class="clearfix"></div>
+
+<div class="row" bindonce>
+    <div class="col-md-12" style="padding:5px 20px 0px 20px;margin-bottom:10px">
+        <p class='content-text'>
+            <span ng-bind-html="content.content_text"></span>
+            <span ng-show="content.truncated"><a href="javascript:void(0)" ng-click="viewMoreClick()"><small>{{'VIEW_MORE' | translate}}</small></a></span>
+        </p>
+        <div class='row' ng-if='content.class_id==1' data='content.content_data' lkr-link-viewer></div>
+        <div class='row' ng-if='content.class_id==2' data='content.content_data' contentid='content.id' zoom='{{zoom}}' lkr-table-viewer></div>
+        <div class='row' ng-if='content.class_id==3' data='content.content_data' zoom='{{zoom}}' lkr-chart-viewer></div>
+        <div class='row' ng-if='content.class_id==4' data='content.content_data' votes="content.votes" zoom='0' contentid='content.id' lkr-poll-viewer></div>
+        <div class='row' ng-if='content.class_id==5' data='content.content_data' contentid='content.id' author='content.user_id' calendar='content.calendar' lkr-event-viewer></div>
+        <div class='row' ng-if='content.class_id==6' data='content.content_data' lkr-location-viewer></div>
+        <div ng-if='content.attachments.length'>
+            <div class='row' data='content.attachments' contentid = 'content.id' lkr-file-viewer></div>
+        </div>
+    </div>
+</div>
+
+<div class="row row-stream">
+    <ul class='stream-toolbar' style="  color:#666">
+        <li>
+            <button ng-click="currentView='comments'" class="btn btn-panel" ng-class="currentView == 'comments' ? 'selected': ''"><i class='fa fa-comments-o'></i>
+                <span class="icon-text">&nbsp;{{'COMMENTS' | translate}} {{content.comment_count}}</span>
+            </button>
+
+        </li>
+
+        <li ng-show="hasTasks">
+            <button ng-click="currentView='tasks'" class="btn btn-panel" ng-class="currentView == 'tasks' ? 'selected': ''"><i class='fa fa-tasks'></i>
+                <span class="icon-text">&nbsp;{{'TASKS' | translate}} {{content.task_count}}</span>
+            </button>
+        </li>
+        <li>
+            <lkr-likes btn-class='btn btn-panel' class-name='Content' object-id='content.id' likes="content.likes"></lkr-likes>
+
+        </li>
+        <li>
+            <button class="btn-panel"
+                    ng-class="content.starred ? 'active' : ''"
+                    ng-click="starredClick(content.id)">
+                <i class="fa" ng-class="content.starred ? 'fa-star' : 'fa-star-o'" ></i><span class="icon-text">&nbsp;{{'STARRED' | translate}}</span>
+            </button>
+        </li>
+        <li>
+            <button ng-if='!zoom' class="btn btn-panel hidden-sm" ng-click="zoomClick(content.id)"><i class='fa fa-search-plus'></i><span class="icon-text">&nbsp;{{'ZOOM' | translate}}</span></button>
+        </li>
+        <script id="calendar.html" type="text/ng-template">
+            <div ng-model="date">
+                <datepicker show-weeks="false"></datepicker>
+            </div>
+            <hr />
+            <div class="alert alert-success">{{text}}</div>
+        </script>
+
+        <li>
+            <button class="btn btn-panel"
+                data-template="partials/pop-share-content.html"
+                data-container='body'
+                data-animation="am-fade"
+                bs-popover>
+                <i class='fa fa-share'></i><span class="icon-text">&nbsp;{{'SHARE' | translate}}</span>
+            </button>
+        </li>
+        <li>
+
+        </li>
+        <li ng-if='contentMine(content.user_id)'>
+            <button class="btn btn-panel"
+
+                data-template="partials/pop-delete-content.html"
+                data-container='body'
+                data-animation="am-fade"
+                bs-popover>
+                <i class='fa fa-trash-o'></i><span class="icon-text">&nbsp;{{'DELETE' | translate}}</span>
+            </button>
+        </li>
+    </ul>
+    <div ng-if="currentView == 'comments' " lkr-comments comments="content.comments" class-name='content' comment-count="content.comment_count" content-id="content.id" ></div>
+    <div ng-if="currentView == 'tasks'" style="padding: 10px">
+        <div class="content-class-panel">
+            <ul class="list-group">
+                <li ng-repeat="task in content.task_summary" style=" display: block" >
+                    <div class="task-panel">
+                        <div class="task-heading" >
+                            <a class="task-item" href="#/task/{{task.id}}">
+                                <span class="icon"><i class="fa state-{{task.state}} fa-fw"></i></span>
+                                <span class="icon priority-{{task.priority}}"><i class="fa fa-star fa-fw"></i> </span>
+                                <span class="title" ng-class="task.state > 2 ? 'striket': '' ">{{task.title}}</span>
+                                <span ng-if="!formatter.isMe(task.user_id)" class="creator">{{task.user.full_name}}</span>
+                                <span class="creator" ng-if="task.assignments"><i class="fa fa-long-arrow-right"></i></span>
+                                <span class="assign">{{task.assignments}}</span>
+                                <span class="pull-right duedate">{{formatter.longDate(task.due_date)}}</span>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item" ng-if='newTaskView'>
+                    <div lkr-task task="newTask"  content-id="{{content.id}}"
+                         new-record on-cancel-event="onCancelNewTask()" on-insert-event="onNewTaskPost(task)">
+                    </div>
+                </li>
+            </ul>
+            <a href="javascript:void(0)" ng-click="newTaskClick()"><small>{{'NEW_TASK' | translate}}</small></a>
+        </div>
+    </div>
+</div>
+

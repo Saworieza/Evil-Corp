@@ -1,0 +1,29 @@
+<div class="content-header b-b">
+    <h1><i class="fa fa-user"></i> {{'CALENDAR' | translate}}</h1>
+</div>
+<div class="content-body"  ng-cloak>
+    <div class="col-md-2">
+        <div class='side-panel'>
+
+            <ul>
+                <li class='side-menu'>
+                    <i style='color:#008ABE' class='fa fa-square'></i> {{'EVENTS' | translate}}&nbsp;&nbsp;
+                </li>
+                <li class='side-menu'>
+                    <i style='color:#EA5FAD' class='fa fa-square'></i> {{'TASKS' | translate}}
+                </li>
+
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-10">
+       <div class="panel panel-stream" >
+
+       <div id="calendar"  style="padding: 20px"
+            ui-calendar="uiConfig.calendar" class="span8 calendar" ng-model="eventSources"></div>
+       </div>
+    </div>
+</div>
+
+
+

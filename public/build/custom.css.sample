@@ -1,0 +1,23 @@
+/*Login and activation pages*/
+.auth-app-name {
+    font-size: 32px;
+}
+
+.auth-app-subtitle {
+    font-size: 18px;
+}
+
+/*App toolbar*/
+.navbar-brand {
+    font-size: 12px;
+}
+
+/*Home page*/
+.home-content-text {
+    color: #333;
+}
+
+/*Activity stream*/
+.content-text {
+    font-size: 15px;
+}

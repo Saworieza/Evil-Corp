@@ -1,0 +1,129 @@
+<div class="content-body">
+    <div class="col-md-2">
+        <div class='side-panel'>
+            <div class="input-group">
+                <input class="form-control" ng-model="searchText" placeholder="{{'SEARCH' | translate}}">
+                 <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click='loadWikis()'><i class="fa fa-search"></i></button>
+                    <button type="button" ng-show='searchText' class="btn btn-default" ng-click="searchCancelClick()"><i class="fa fa-times"></i></button>
+                </span>
+            </div>
+            <br>
+            <ul>
+                <li class='side-menu' ng-class="menuIndex == $index ? 'selected' : ''" ng-repeat="wiki in wikis">
+                    <a ng-click="menuClick($index)">{{wiki.title}}</a>
+                </li>
+            </ul>
+            <button class="btn btn-xxs btn-block btn-primary" ng-show="!editting" ng-click="newWikiClick()">{{'NEW_WIKI' | translate}}</button>
+        </div>
+    </div>
+    <div class="col-lg-7 col-md-10">
+        <div class="row" >
+            <div class="panel-stream" style="padding: 13px !important;" >
+                <div class="wiki-body" ng-if="menuIndex >= 0 && !editing">
+                    <div style="border-bottom: 1px solid #eeeeee; padding-bottom: 10px; margin-bottom: 10px">
+                           <span class="pull-right">
+
+                            <button class="btn btn-xxs btn-white r-sep"
+                                    ng-show="currentSpace.role() == 3 || currentSpace.isMine(wikis[menuIndex].created_by.id) || wikis[menuIndex].access == 'PU'"
+                                    ng-click="editWikiClick()"><i class="fa fa-pencil fa-fw"></i> </button>
+                            <button class="btn btn-xxs btn-white r-sep"
+                                    ng-show="currentSpace.role() == 3 || currentSpace.isMine(wikis[menuIndex].created_by.id)"
+                                    data-title="{{'DELETE_THIS_WIKI' | translate}}"
+                                    data-template="partials/pop-delete.html" container='body' data-animation="am-fade" bs-popover
+                                    ><i class="fa fa-trash-o fa-fw"></i> </button>
+                        </span>
+                        <span style="font-size: 16px; color: #777">{{wikis[menuIndex].title}}</span><br>
+                        <small style="color: #777">
+                            {{'CREATED_BY' | translate}} {{wikis[menuIndex].created_by.full_name}}, {{formatter.formatDateTime(wikis[menuIndex].created_at) }}
+                            <span ng-show="wikis[menuIndex].updated_at != wikis[menuIndex].created_at">&nbsp;-&nbsp;{{'UPDATED_BY' | translate}} {{wikis[menuIndex].updated_by.full_name}}, {{formatter.formatDateTime(wikis[menuIndex].updated_at) }}</span>
+                        </small>
+                    </div>
+                    <p id='wikihtml' ng-bind-html="wikis[menuIndex].body | highlight:searchText:searching">
+                    </p>
+
+
+                </div>
+                <div class="wiki-body" ng-show="editing">
+                    <div class="row" style="margin-bottom: 20px">
+                        <div class="col-md-6">
+                            <input class="form-control" ng-model = 'editWiki.title' placeholder="{{'TITLE' | translate}}">
+                            <span ng-if="currentSpace.role() == 3 || currentSpace.isMine(wikis[menuIndex].created_by.id)">
+                                <label class="control-label">{{'ALLOW_EDIT' | translate}}: </label>&nbsp;
+                                <small>
+                                    <input type="radio" ng-model="editWiki.access" value="PR">&nbsp;{{'AUTHOR_AND_MODERATORS_ONLY' | translate}}.&nbsp;&nbsp;
+                                    <input type="radio" ng-model="editWiki.access" value="PU">&nbsp;{{'EVERYONE_IN_THIS_SPACE' | translate}}.
+                                </small>
+                            </span>
+                        </div>
+                        <div class="col-md-4 pull-right">
+                            <button class="btn btn-xs  pull-right btn-white" ng-click="editing=false"><i class="fa fa-times fa-fw"></i>{{'CANCEL' | translate}} </button>
+                            <button class="btn btn-xs  pull-right btn-white r-sep" ng-click="saveClick()"><i class="fa fa-check fa-fw"></i>{{'SAVE' | translate}} </button>
+                        </div>
+                    </div>
+                    <div id="htmleditor"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-10 col-lg-offset-0 col-md-offset-2">
+        <div class="row" >
+            <div class='side-panel' ng-if="! (editing && editWiki.id ==0)">
+
+                <h5>{{'ATTACHMENTS' | translate}}</h5>
+                <table class="table">
+                    <tbody >
+                        <tr  ng-repeat="file in wikis[menuIndex].attachments" >
+                            <td class="td-bb" style="width: 5%">
+                                <img ng-src="{{file.icon}}">
+                            </td>
+                            <td class="td-bb" style="width: 95%">
+                                <a href="{{getUrlToFile(file.code)}}">{{file.file_name}}</a>
+                                <br>
+                                <small>{{formatter.formatDateTime(file.file_date)}} - {{formatter.formatFileSize(file.file_size)}}</small>
+                            </td>
+                            <td class="td-bb" style="width: 10%">
+                                <button
+                                    ng-show="currentSpace.role() == 3 || currentSpace.isMine(wikis[menuIndex].created_by.id) || wikis[menuIndex].access == 'PU'"
+                                    class="btn btn-xs btn-white"
+                                    data-template="partials/pop-delete-file.html"
+                                    data-file="file" container='body' data-placement="left" data-animation="am-fade" bs-popover>
+                                    <i  class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr ng-repeat="newFile in newFiles | filter:  {status : '!done'}">
+                            <td style="width: 10%">
+                                <i ng-show="newFile.status == 'w'" class="fa fa-spinner  fa-2x"></i>
+                                <i ng-show="newFile.status == 'error'" style="color:red;" class="fa fa-times fa-2x"></i>
+                            </td>
+                            <td>{{newFile.original_name}}
+                                <span ng-show="newFile.status == 'error'"><br><small>{{'ERROR_UPLOADING' | translate}}</small></span>
+                                <span ng-show="newFile.status == 'w'"><br><small>{{'UPLOADING' | translate}}...</small></span>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="margin-top: 10px">
+                        <input  id="_fileInput" type="file" accept="*" ng-file-select="onFileSelect($files)" multiple style="position:absolute;left:-10000px;top:-10000px;">
+                        <button ng-show="currentSpace.role() == 3 || currentSpace.isMine(wikis[menuIndex].created_by.id) || wikis[menuIndex].access == 'PU'" class="btn btn-sm btn-white" ng-click="uploadClick()">{{'ATTACH_FILE' | translate}}</button>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</div>
+<script>
+
+    $(document).ready(function() {
+              var h = $(window).height() - 290;
+             $('#htmleditor').summernote({height:h, focus:true});
+
+          });
+
+</script>

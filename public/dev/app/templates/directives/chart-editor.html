@@ -1,0 +1,44 @@
+<div>
+    <table class="table">
+        <thead>
+        <tr>
+            <td class="td-nb">
+                <div class='btn-group'>
+                    <div class="btn-group">
+                        <label class="btn btn-xs" ng-class="chartData.chartType=='line' ? 'btn-info' : 'btn-white'" ng-click="chartData.chartType='line'">{{'LINE' | translate}}</label>
+                        <label class="btn btn-xs" ng-class="chartData.chartType=='bar' ? 'btn-info' : 'btn-white'" ng-click="chartData.chartType='bar'">{{'BAR' | translate}}</label>
+                        <label class="btn btn-xs" ng-class="chartData.chartType=='area' ? 'btn-info' : 'btn-white'" ng-click="chartData.chartType='area'">{{'AREA' | translate}}</label>
+                        <label class="btn btn-xs" ng-class="chartData.chartType=='donut' ? 'btn-info' : 'btn-white'" ng-click="chartData.chartType='donut'">{{'DONUT' | translate}}</label>
+                    </div>
+                </div>
+            </td>
+            <td class="td-nb" ng-repeat="n in chartData.skeys">
+                <input class='form-control form-control-bold' type="text" ng-model='chartData.labels[n-1]'>
+            </td>
+            <td class="td-nb" width="110px">
+                <div class='btn-group'>
+                    <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="bottom" title = "{{'ADD_SERIE' | translate}}" ng-click="addSerieClick()"><i class='fa fa-plus'></i></button>
+                    <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="bottom" title = "{{'REMOVE_SERIE' | translate}}" ng-click="delSerieClick()"><i class='fa fa-minus'></i></button>
+                </div>
+            </td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="row in chartData.data">
+            <td class="td-nb"><input type="text" class='form-control' ng-model='row.xlabel'></td>
+            <td class="td-nb" ng-repeat="n in chartData.skeys">
+                <input type="text" class='form-control' ng-model='row["s"+n]'>
+            </td>
+            <td class="td-nb">
+                <button ng-show='$index<chartData.data.length-1'  data-toggle="tooltip" data-placement="bottom" title= "{{'REMOVE_VALUE' | translate}}" class='btn btn-white btn-sm' ng-click='delRowClick($index)'><i class='fa fa-minus'></i></button>
+                <button ng-show='$index==chartData.data.length-1' data-toggle="tooltip" data-placement="bottom" title= "{{'ADD_VALUE' | translate}}"  class='btn btn-white btn-sm' ng-click='addRowClick()'><i class='fa fa-plus'></i></button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <div>
+        <morris-chart id="chartEd" data-options="chartData"></morris-chart>
+    </div>
+    <br>
+</div>

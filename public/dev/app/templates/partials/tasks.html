@@ -1,0 +1,29 @@
+<div class="col-md-2">
+    <div class='side-panel' >
+        <ul>
+            <li class='side-menu' ng-class="menuIndex == 0 ? 'selected' : ''">
+                <a ng-click="menuClick(0)">{{'INBOX' | translate}}</a>
+                <span class='pull-right badge badge-side'  ng-show="counters.total > 0" >{{counters.total}}</span>
+            </li>
+            <li class='side-menu' ng-class="menuIndex == 1 ? 'selected' : ''">
+                <a ng-click="menuClick(1)">{{'MY_TASKS' | translate}}</a>
+                <span class='pull-right badge badge-side' ng-show="counters.my > 0">{{counters.my}}</span>
+            </li>
+            <li class='side-menu' ng-class="menuIndex == 2 ? 'selected' : ''">
+                <a ng-click="menuClick(2)">{{'DELEGATED' | translate}}</a>
+                <span class='pull-right badge badge-side' ng-show='counters.delegated > 0'>{{counters.delegated}}</span>
+            </li>
+            <li class='side-menu' ng-class="menuIndex == 3 ? 'selected' : ''">
+                <a ng-click="menuClick(3)">{{'ARCHIVED' | translate}}</a>
+            </li>
+        </ul>
+        <button class="btn btn-xxs btn-primary btn-block" ng-click="newTaskClick()">{{'NEW_TASK' | translate}}</button>
+    </div>
+</div>
+<div class="col-md-9">
+    <div class="row" >
+        <div class="panel-stream" style="padding: 10px !important;">
+            <div lkr-task-list filter='filter' tasks="tasks"></div>
+        </div>
+    </div>
+</div>

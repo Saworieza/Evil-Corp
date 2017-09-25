@@ -1,0 +1,11 @@
+<div class="popover">
+    <div class="arrow"></div>
+    <h3 class="popover-title" ng-bind="title" ng-show="title"></h3>
+    <div class="popover-content">
+        <br>
+        <button class="btn btn-sm btn-danger" ng-click="$hide(); $parent.confirmClick(identifier);">{{'OK' | translate}}</button>
+        &nbsp;
+        <button class="btn btn-sm btn-default" ng-click="$hide()">{{'CANCEL' | translate}}</button>
+    </div>
+
+</div>

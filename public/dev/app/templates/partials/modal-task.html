@@ -1,0 +1,19 @@
+<div class="modal" tabindex="-1" role="dialog" bindonce>
+    <div class="modal-dialog people-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>{{'TASK' | translate}}</h4>
+            </div>
+            <div class="modal-body">
+                <div bindonce>
+                    <div class="row" >
+                        <div lkr-task task="task" form-mode="false" no-comments></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="$hide()">{{'CLOSE' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>

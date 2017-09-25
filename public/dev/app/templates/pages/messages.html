@@ -1,0 +1,74 @@
+<div class="content-header b-b">
+    <h1><i class="fa fa-envelope"></i> {{'MESSAGES_NOTIFICATIONS' | translate}}</h1>
+</div>
+<div class="content-body" ng-cloak>
+    <div class="col-md-2">
+        <div class='side-panel'>
+            <ul>
+                <li class='side-menu' ng-class="viewIndex == 0 ? 'selected' : ''" ng-click="viewClick(0)">
+                    <a href='javascript:void(0)'>{{'INBOX' | translate}}</a>
+                </li>
+                <li class='side-menu' ng-class="viewIndex == 1 ? 'selected' : ''" ng-click="viewClick(1)">
+                    <a href='javascript:void(0)'><span>{{'SENT' | translate}}</span>
+                        <span class='pull-right badge badge-side' ng-show="counters.mytasks>0">1</span>
+                    </a>
+                </li>
+            </ul>
+            <button class='btn btn-xxs btn-primary btn-block' ng-click='newMessageClick()'>{{'NEW_MESSAGE' | translate}}</button>
+        </div>
+    </div>
+    <div class="col-md-10" >
+        <div class="panel panel-stream animated fadeInDown" >
+                <div class="padnel-group" ng-model="newMessage.panel" bs-collapse start-collapsed="true">
+                    <div class="panel-collapse" bs-collapse-target>
+                        <div class="panel-body">
+                            <h5>{{'NEW_MESSAGE' | translate}}</h5>
+                            <div class="col-md-6" style="padding-left: 10px">
+                                <tags-input
+                                        ng-model="newMessage.to"
+                                        display-property="full_name"
+                                        placeholder = "{{'TO' | translate}}"
+                                        replace-spaces-with-dashes="false">
+                                    <auto-complete source="loadUsers($query)"></auto-complete>
+                                </tags-input>
+                                <textarea class="form-control b-sep" rows="4" ng-model="newMessage.body" placeholder="Message"></textarea>
+                                <button class="btn btn-sm btn-primary" ng-click="sendClick()">{{'SEND' | translate}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div style='padding:10px' ng-show='viewIndex==0'>
+                    <div class="btn-group">
+                        <button style='margin-bottom:4px' class='btn btn-xs btn-white' ng-click='checkAllClick(true)'><i class="fa fa-check-square-o"></i></button>
+                        <button style='margin-bottom:4px' class='btn btn-xs btn-white' ng-click='checkAllClick(false)'><i class="fa fa-square-o"></i></button>
+                        <button style='margin-bottom:4px' class='btn btn-xs btn-white' ng-click="markAllReadClick()">{{'MARK_AS_READ' | translate}}</button>
+                    </div>
+                    <h5>{{'UNREAD' | translate}} ({{(msgs | filter:{read:false}).length}})</h5>
+                    <div class="panel-group" ng-model="panels.activePanel" bs-collapse>
+                        <div class="task-panel panel-default" ng-repeat="msg in msgs | filter:{read:false}">
+                             <div lkr-message-item message="msg"></div>
+                        </div>
+                    </div>
+                    <br>
+                    <h5>{{'ALREADY_READ' | translate}}</h5>
+                    <div class="panel-group" ng-model="panels.activePanelUnread" bs-collapse>
+                        <div class="task-panel panel-default" ng-repeat="msg in msgs | filter:{read:true}">
+                            <div lkr-message-item message="msg"></div>
+                        </div>
+                    </div>
+                </div>
+                <div style='padding:10px' ng-show='viewIndex==1'>
+                    <div class="panel-group" ng-model="panels.activePanelUnread" bs-collapse>
+                        <div class="task-panel panel-default" ng-repeat="msg in msgs ">
+                            <div lkr-message-item message="msg" sent></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

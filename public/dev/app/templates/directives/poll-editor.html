@@ -1,0 +1,21 @@
+<div>
+    <table class="table">
+        <tbody>
+        <tr ng-repeat="row in data.options track by $index">
+            <td class="td-nb"><input type="text" class='form-control' ng-model='data.options[$index]' placeholder="{{'NEW_OPTION' | translate}}"></td>
+            <td class="td-nb">
+                <button ng-show='$index<data.options.length-1' class='btn btn-white btn-sm' ng-click='delRowClick($index)'><i class='fa fa-minus'></i></button>
+                <button ng-show='$index==data.options.length-1' class='btn btn-white btn-sm' ng-click='addRowClick()'><i class='fa fa-plus'></i></button>
+            </td>
+        </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td class="td-nb">
+                    <input type="checkbox" ng-model="data.allow_add">&nbsp;{{'ALLOW_MEMBERS_TO_ADD_MORE_OPTIONS' | translate}}
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+</div>

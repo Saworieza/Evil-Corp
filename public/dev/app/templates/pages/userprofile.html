@@ -1,0 +1,84 @@
+
+<div class="content-body" ng-cloak>
+
+    <div class="col-md-9">
+       <div class="panel panel-stream">
+           <div class='row' style="padding: 10px">
+                <span class="pull-left avatar m-r">
+                    <img ng-src="{{formatter.getAvatar(userid)}}" style="max-width:100px; max-height: 100px" >
+                </span>
+                <span class="clear">
+                    <div class="profile-fullname">{{profile.full_name}}</div>
+                    <div class="profile-sub">
+                        {{profile.position || '&nbsp;'}}<span ng-if="profile.position">&nbsp;-&nbsp;</span>{{profile.organization}}
+                    </div>
+                    <div class="b-b" style="margin: 5px 0px 5px 0px"></div>
+                    <div class="col-md-10 no-pad">
+                        <table>
+                            <tr ng-repeat="field in profile.custom_fields">
+                                <td class="td-profile-title" >{{field.caption}}&nbsp;&nbsp;</td>
+                                <td class="td-profile-value" >{{profile['custom_'+field.name]}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </span>
+                <div class="clearfix"></div><br>
+
+           </div>
+
+       </div>
+       <div class="panel panel-stream" style="padding: 10px !important;">
+           <h5>{{'RECENT_ACTIVITY' | translate}}</h5><br>
+           <div  class="panel panel-stream"
+                 style='z-index:{{1000-$index}}; box-shadow:  none; border-bottom: 1px solid #ddd' ng-repeat="content in contents track by content.id" bindonce>
+               <div class="col-md-4" bindonce style="float:left">
+                   <i class="{{icons[content.class_id]}} fa-2x pull-left">&nbsp;</i>
+                   <div style='margin-left:50px; font-weight:400; font-size:14px' >
+                       <p style="font-weight:400; margin-top:2px; font-size:12px; color:#666">
+                           {{formatter.formatDateCalendarUtc(content.created_at)}}
+                           <br>
+                           {{'POSTED' | translate}} {{'CONTENT_CLASS_'+content.class_id | translate}} @<a href="javascript:void(0)" ng-click="gotoSpace(content.space_code)">{{content.space}}</a><br>
+                       </p>
+                   </div>
+               </div>
+               <div class="col-md-8" bindonce>
+                   <p style="font-size: 12px; font-style: italic; color:#666">
+
+                       <span ng-bind-html="content.content_text" class="home-content-text"></span>&nbsp;
+                       <br>
+                       <a ng-click="zoomClick(content.id)" class="btn btn-table">
+                           <i class="fa fa-fw fa-arrow-circle-right "></i>
+                       </a>&nbsp;
+
+                   </p>
+               </div>
+
+               <div class="clearfix"></div>
+           </div>
+       </div>
+
+    </div>
+
+    <div class="col-md-3">
+        <div class="panel pad10">
+            <h5>{{'CONTACT' | translate}}</h5>
+            <div ng-if='profile.email'      class='profile-contact-info'><i class='fa fa-envelope fa-fw'></i><a href="mailto:{{profile.email}}"> {{profile.email || ''}}</a></div>
+            <div ng-if='profile.phone'      class='profile-contact-info'><i class='fa fa-phone fa-fw'></i><a href="javascript:void(0)"> {{profile.phone || ''}}</a></div>
+            <div ng-if='profile.facebook'   class='profile-contact-info'><i class='fa fa-facebook fa-fw'></i><a href="https://facebook.com/{{profile.facebook}}" target="_blank"> {{profile.facebook}}</a></div>
+            <div ng-if='profile.twitter'    class='profile-contact-info'><i class='fa fa-twitter fa-fw'></i><a href="https://twitter.com/{{profile.twitter}}" target="_blank"> {{profile.twitter}}</a></div>
+            <div ng-if='profile.googleplus' class='profile-contact-info'><i class='fa fa-google-plus fa-fw'></i><a href="https://plus.google.com/+{{profile.googleplus}}" target="_blank"> {{profile.googleplus}}</a></div>
+            <div ng-if='profile.linkdin'    class='profile-contact-info'><i class='fa fa-linkedin fa-fw'></i><a href="http://www.linkedin.com/{{profile.linkedin}}" target="_blank"> {{profile.linkedin}}</a></div>
+            <div ng-if='profile.skype'      class='profile-contact-info'><i class='fa fa-skype fa-fw'></i><a href="javascript:void(0)"> {{profile.skype}}</a></div>
+            <div ng-if='profile.github'     class='profile-contact-info'><i class='fa fa-github fa-fw'></i><a href="https://github.com/{{profile.github}}" target="_blank"> {{profile.github}}</a></div>
+        </div>
+        <div class="panel pad10" ng-show="! formatter.isMe(profile.id)">
+                <h5>{{'PRIVATE_MESSAGE_TO' | translate}} {{profile.full_name}}</h5>
+                <textarea class="form-control b-sep" rows="8" ng-model="privateMessage"></textarea>
+
+                <button class="btn btn-white btn-sm" ng-click="sendMessageClick()">{{'SEND' | translate}}</button>
+        </div>
+    </div>
+</div>
+
+
+

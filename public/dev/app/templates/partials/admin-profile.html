@@ -1,0 +1,29 @@
+<h4>User profile custom fields</h4>
+{{editingField}}
+<table class="table">
+    <thead>
+        <tr>
+            <td>Field name</td>
+            <td>Type</td>
+            <td>Options</td>
+            <td>&nbsp</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="field in profileFields track by $index">
+            <td>
+                {{field.name}}
+            </td>
+            <td>
+                {{field.type}}
+            </td>
+            <td>
+                {{field.options}}
+            </td>
+            <td>
+                <button class="btn btn-table" ng-click="editProfileField(field.id)">P</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+

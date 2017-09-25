@@ -1,0 +1,48 @@
+<div class="content-header b-b">
+    <div class="row">
+    <div class="col-md-6">
+        <h1 style="margin-left: 3px"><i ng-class="currentSpace.access() == 'PU'? 'fa fa-unlock' : 'fa fa-lock'"></i> {{currentSpace.title()}}</h1>
+        <span class="label label-danger" ng-if="currentSpace.active()==0">{{'INACTIVE' | translate}}</span>
+    </div>
+
+    <div class="col-md-6">
+        <div class="maintoolbar btn-group pull-right-lg">
+            <a class="btn btn-xs" ng-click = 'selected=0'
+               ng-class="selected == 0 ? 'btn-info' : 'btn-white'"
+               ui-sref="space.stream"><i class="fa fa-comment-o"></i> {{'STREAM' | translate}}</a>
+            <a ng-class="selected == 1 ? 'btn-info' : 'btn-white'"
+               ng-if="currentSpace.options().features.indexOf('drive') >= 0"
+               class="btn btn-xs" ui-sref="space.files"><i class="fa fa-hdd-o"></i> {{'DRIVE' | translate}}</a>
+            <a ng-class="selected == 2 ? 'btn-info' : 'btn-white'"
+               ng-if="currentSpace.options().features.indexOf('wikis') >= 0"
+               class="btn btn-xs" ui-sref="space.wiki"><i class="fa fa-file-word-o"></i> {{'WIKIS' | translate}}</a>
+            <a ng-if="currentSpace.options().features.indexOf('tasks') >= 0"
+               ng-class="selected == 3 ? 'btn-info' : 'btn-white'"
+               class="btn btn-xs" ui-sref="space.tasks"><i class="fa fa-tasks"></i> {{'TASKS' | translate}}</a>
+
+            <a ng-repeat="module in modules" href="javascript:void(0)"
+               ng-class="selected == 4 + $index ? 'btn-info' : 'btn-white'"
+               class="btn btn-xs" ui-sref="space.{{module.moduleName}}">
+                <i class="{{module.icon}}"></i>
+                {{module.caption}}
+               </i>
+            </a>
+
+            <a ng-if="currentSpace.role()==3"
+               ng-class="selected == 4 ? 'btn-info' : 'btn-white'"
+               class="btn btn-xs" ui-sref="space.admin"><i class="fa fa-cogs"></i>
+            </a>
+
+            <a class="btn btn-xs btn-white" href="javascript:void(0)"
+               ng-if="currentSpace.options().features.indexOf('chat') >= 0"
+               data-template="partials/aside-chat.html" data-backdrop = "false"
+               data-animation="am-fade-and-slide-right" data-placement="right"
+               data-container="body" bs-aside=""><i class="fa fa-comments"></i>
+            </a>
+
+        </div>
+    </div>
+    </div>
+</div>
+
+<div ui-view></div>

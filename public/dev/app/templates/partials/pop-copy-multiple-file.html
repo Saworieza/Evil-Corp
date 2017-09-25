@@ -1,0 +1,25 @@
+<div class="popover" style="width: 500px">
+    <div class="arrow"></div>
+
+    <h3 class="popover-title"ng-show="title">
+        {{title}}
+    </h3>
+    <div class="popover-content">
+        <div style="max-height: 150px; overflow: auto">
+            <div treecontrol class="tree-classic"
+                 tree-model="folders"
+                 options="treeOptions"
+                 on-selection="showSelected(node)"
+                 selected-node="aFolder">
+                {{node.name}}
+            </div>
+        </div>
+
+        <div style="margin-bottom: 10px"></div>
+        <button class="btn btn-sm btn-info" ng-click="$hide();okClick(aFolder.id)">{{okCaption}}</button>
+        &nbsp;
+        <button class="btn btn-sm btn-default" ng-click="$hide()">{{'CANCEL' | translate}}</button>
+    </div>
+
+</div>
+

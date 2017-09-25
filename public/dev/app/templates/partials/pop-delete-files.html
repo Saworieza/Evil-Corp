@@ -1,0 +1,11 @@
+<div class="popover">
+    <div class="arrow"></div>
+    <h3 class="popover-title">{{title}}</h3>
+    <div class="popover-content">
+        {{content}}
+        <button class="btn btn-sm btn-danger" ng-click="$hide(); $parent.batchDeleteClick();">{{'DELETE' | translate}}</button>
+        &nbsp;
+        <button class="btn btn-sm btn-default" ng-click="$hide()">{{'CANCEL' | translate}}</button>
+    </div>
+
+</div>

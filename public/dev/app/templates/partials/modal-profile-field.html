@@ -1,0 +1,46 @@
+<div class="modal" tabindex="-1" role="dialog" bindonce>
+    <div class="modal-dialog space-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Profile field</h4>
+                <div class="clearfix"></div>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label"><strong>{{'FIELD_NAME' | translate}}</strong></label>
+                        <div class="col-md-10">
+                           <input class="form-control" ng-keypress="error['title']=null" ng-model="editField.name">
+                           <span class="inline-error">{{error['title']}}</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label"><strong>{{'FIELD_TYPE' | translate}}</strong></label>
+                        <div class="col-md-10">
+                            <select class="form-control" ng-model="editField.type">
+                                <option value="PU">Text</option>
+                                <option value="PU">Large text</option>
+                                <option value="PU">Date</option>
+                                <option value="PU">Selection</option>
+                                <option value="PU">Number</option>
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label"><strong>{{'OPTIONS' | translate}}</strong></label>
+                        <label ng-repeat="feature in features" class="control-label">
+                            <input type="checkbox" checklist-model="editSpace.options.features" checklist-value="feature.value">&nbsp;{{feature.text}}&nbsp;&nbsp;&nbsp;
+                        </label>
+                    </div>
+                 </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" ng-click="editSpaceOkClick()">{{'OK' | translate}}</button>&nbsp;
+                <button type="button" class="btn btn-default" ng-click="$hide()">{{'CANCEL' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>

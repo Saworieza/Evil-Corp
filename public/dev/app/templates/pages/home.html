@@ -1,0 +1,190 @@
+<div class="content-header b-b">
+    <h1><i class="fa fa-home"></i> {{'HOME' | translate}}</h1>
+</div>
+<div class="content-body" ng-cloak>
+    <div class="col-md-2" style="padding-right: 30px">
+        <div class='side-panel'>
+            <div class='list-group-item transparent no-pad clearfix'>
+                <span class="pull-left thumb-sm avatar m-r">
+                    <img ng-src="{{formatter.getMyAvatar()}}" >
+                </span>
+                <span class="clear">
+                    <span>{{formatter.getFullName()}}</span><br>
+                    <small>
+                        <a class="text-ellipsis" ui-sref="profile" href="javascript:void(0)">{{'MY_PROFILE' | translate}}</a>
+                        <br>
+                        <a  href="{{getLogoutUrl()}}">{{'LOGOUT' | translate}}</a>
+                    </small>
+                </span>
+            </div>
+        </div>
+        <div class='side-panel' ng-show="canCreateSpace()" style="margin-bottom: 25px">
+            <button class="btn btn-xxs btn-primary btn-block" ng-click="createSpaceClick()">{{'CREATE_A_NEW_SPACE' | translate}}</button>
+        </div>
+        <div class='side-panel' ng-show="events.length" bindonce>
+            <h5 class='side-title title-right'>{{'UPCOMING_EVENTS' | translate}}</h5>
+            <div ng-repeat="event in events" style="margin-bottom:2px !important ">
+                <div class="row " style="padding-bootm:2px" >
+                    <div class="pull-left hidden-md" style="margin-left:3px">
+                        <div class="date-sm">
+                            <p bo-text='formatter.formatDay(event.start_date)'></p>
+                            <span class='date-month' bo-text='formatter.formatMonth(event.start_date)'></span>
+                        </div>
+                    </div>
+                    <div class="pull-left" style="margin-left:10px; margin-top:-5px">
+                        <h6 style="font-weight:400; margin-top:4px;margin-bottom:3px"> {{event.type}}<br> <small>{{event.space.title}}</small></h6>
+                        <h6 style="font-weight:300; margin-top:0px" class="ng-binding" ng-if= "!event.all_day" bo-text='formatter.formatDateTime(event.start_date)'></h6>
+                        <h6 style="font-weight:300; margin-top:0px" class="ng-binding" ng-if= "event.all_day" bo-text='formatter.formatDate(event.start_date)'></h6>
+                        <a href='#/post/{{event.id}}'><p style="color:#56C0E0;margin:0px;position:relative; top:-10px"><small>{{'VIEW_EVENT' | translate}}</small></p></a>
+                    </div>
+                </div>
+            </div>
+            <!--<pre>{{events|json}}</pre>-->
+
+        </div>
+
+        <div class='side-panel' ng-show="tasks" bindonce>
+
+            <h5 class='side-title title-right'>{{'TASKS' | translate}}</h5>
+            <ul>
+                <li class='side-menu'>
+                    <a ui-sref="tasks">{{'INBOX' | translate}}</a>
+                    <span class='pull-right badge badge-side'  ng-show="tasks.total > 0" >{{tasks.total}}</span>
+                </li>
+                <li class='side-menu'>
+                    <a ui-sref="tasks">{{'MY_TASKS' | translate}}</a>
+                    <span class='pull-right badge badge-side' ng-show="tasks.my > 0">{{tasks.my}}</span>
+                </li>
+                <li class='side-menu' >
+                    <a ui-sref="tasks">{{'DELEGATED' | translate}}</a>
+                    <span class='pull-right badge badge-side' ng-show='tasks.delegated > 0'>{{tasks.delegated}}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-md-10">
+        <div class="row">
+            <div class='col-md-8'>
+                <div class="panel panel-stream animated fadeInDown" >
+                    <h5>{{'RECENT_ACTIVITY' | translate}}</h5>
+                    <div class="row" style="padding: 10px">
+                        <div  class="panel panel-stream animated fadeInDown"
+                              style='z-index:{{1000-$index}}; box-shadow:  none; border-bottom: 1px solid #ddd' ng-repeat="content in contents track by content.id" bindonce>
+                           <div class="row">
+                            <div class="col-sm-12 col-md-4" bindonce >
+                                <!--<span class="pull-right" style="font-size: 18px; color:#cccccc"><i class="{{icons[content.class_id]}}">&nbsp;</i></span>-->
+                                <img class="thumb-sm avatar pull-left"  ng-src="{{formatter.getAvatar(content.user_id)}}">
+                                <div style='margin-left:50px; font-weight:400; font-size:14px' >
+
+                                    <span>{{content.user.full_name}}</span>
+                                    <br>
+                                    <p style="font-weight:400; margin-top:2px; font-size:12px; color:#666">
+                                        {{formatter.formatDateCalendarUtc(content.created_at)}}
+                                        <br>
+                                        {{'POSTED' | translate}} {{'CONTENT_CLASS_'+content.class_id | translate}}<br>
+                                        @<a href="javascript:void(0)" ng-click="gotoSpace(content.space_code)">{{content.space}}</a>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-8" bindonce>
+                              <p style="font-size: 12px; color:#666">
+
+                                  <span ng-bind-html="content.content_text" class="home-content-text"></span><br>
+                                  <a ng-click="zoomClick(content.id)" class="btn btn-table">
+                                      <i class="fa fa-fw fa-arrow-circle-right "></i>
+                                  </a>&nbsp;
+
+                              </p>
+
+                                <ul class="comment-list" style="padding: 0px"  ng-init="limit=-3" bindonce>
+                                    <a href="javascript:void(0)" ng-init="content.limit=-3" ng-show='content.comments.length > 3 && content.limit == -3' style="margin-left: 15px;" ng-click="content.limit='Infinity'"><small>{{'VIEW_PREVIOUS_COMMENTS' | translate}}</small></a>
+                                    <li class='comment-item animated fadeInDown' style="margin: 3px; border: 1px solid #eee; border-radius: 3px"
+                                        ng-repeat='comment in content.comments | limitTo: content.limit' >
+
+                                        <img class="thumb-sm avatar pull-left" width='15' ng-src="{{formatter.getAvatar(comment.user.id)}}">
+                                            <span class='comment-username'>
+                                                <span style="font-size: 12px">{{comment.user.full_name}}</span>
+                                                <small> {{formatter.formatDateCalendarUtc(comment.created_at)}}</small>
+
+                                            </span>
+
+                                        <p class='comment-text' bo-html='comment.body' style="font-size:11px; margin-bottom:0px"></p>
+
+                                        <div class="row" style="margin-top: 10px;margin-left: 30px;"
+                                             data='comment.attachments' contentid='comment.id' lkr-file-viewer></div>
+                                    </li>
+                                </ul>
+                            </div>
+                           </div>
+                            <!--<div class="col-md-1" bindonce>-->
+                                <!--<span class="pull-right" style="font-size: 18px; color:#ddd"><i class="{{icons[content.class_id]}}">&nbsp;</i></span>-->
+                            <!--</div>-->
+                            <div class="clearfix"></div>
+
+                        </div>
+                        <br>
+                    </div>
+                </div>
+            </div>
+            <div class='col-md-4'>
+
+                <div class="panel widget animated fadeInDown" ng-repeat="space in spaces">
+                    <div class="row">
+                        <div class="col-md-6">
+                                <h2>
+                                    <a href="javascript:void(0)" ng-click="gotoSpace(space.code)"> {{space.title}}&nbsp;</a>
+
+                                </h2>
+                            <p style="font-size: 11px; color:#666; margin-top: 3px">{{'LAST_VISIT' | translate}} {{formatter.formatDateCalendarUtc(space.last_visit)}}</p>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div id="spark_{{space.code}}" class="pull-right"
+                                 style="position: relative; top: 5px"
+                                 bs-tooltip="'{{'LAST_7_DAYS_ACTIVITY' | translate}}'"></div>
+
+                        </div>
+
+                    </div>
+                    <div class="row" style="border-top:1px solid #ddd; margin-top: 10px;padding: 5px 0px">
+                        <div class="col-xs-3 text-center"><i style="font-size: 15px" class="fa fa-user"></i><h2 style="font-size: 14px; font-weight: 300">{{space.user_count}}</h2></div>
+                        <div class="col-xs-3 text-center"><i style="font-size: 15px" class="fa fa-comments-o"></i><h2 style="font-size: 14px; font-weight: 300">{{space.total}}</h2></div>
+                        <div class="col-xs-3 text-center"><i style="font-size: 15px" class="fa fa-star-o"></i><h2 style="font-size: 14px; font-weight: 300">{{space.stars}}</h2></div>
+                        <div class="col-xs-3 text-center"><i style="font-size: 15px" class="fa" ng-class="{'fa-lock': space.access=='PR', 'fa-unlock': space.access=='PU'}"></i>
+                            <h2 style="font-size: 14px; font-weight: 300">{{space.access=='PU' ? ("PUBLIC" | translate) : ("PRIVATE" | translate)}}
+                            </h2></div>
+                    </div>
+
+                </div>
+
+                <div class="panel panel-stream animated fadeInDown" >
+                    <h5>{{'JOIN_A_SPACE' | translate}}</h5>
+                    <div class="panel-group" bs-collapse start-collapsed="true" style="padding: 10px">
+                        <div ng-repeat="space in join" class="invite-head">
+                                <a bs-collapse-toggle href="javascript:void(0)" >
+                                    <span class="pull-right"><i class="fa fa-fw" ng-class="space.access=='PU' ? 'fa-unlock' : 'fa-lock'"></i></span>
+                                    <span class="home-space-title">{{space.title}}</span>
+                                </a>
+                            <div class="" >
+                                <div class="panel-collapse" bs-collapse-target>
+                                    <div class="panel-body">
+                                        <span style="font-size: 13px; color:#666">{{space.description}}</span>
+                                        <br><br>
+                                        <button class="btn btn-xxs btn-primary" ng-click="joinClick(space.code)">{{'JOIN' | translate}}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<button class="btn btn-info" style="display: none"></button>
+
+
+
+
+

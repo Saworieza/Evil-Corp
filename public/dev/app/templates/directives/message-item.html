@@ -1,0 +1,38 @@
+<div>
+    <div class="task-heading">
+        <h4 class="panel-title"></h4>
+        <input ng-if='!message.read && !sent' type="checkbox" ng-model="message.checked">&nbsp;
+        <a href="javascript:void(0)" class="task-item" bs-collapse-toggle>
+            <i class="fa fa-fw" ng-class="message.kind=='MSG' ? 'fa-envelope-o' : 'fa-bell-o'"></i>
+
+            <span ng-if="!sent">{{message.from_user || 'NOTIFICATION' | translate }}</span>
+            <span ng-if="sent">{{'TO' | translate}}: {{message.to_user}}</span>
+            <small>{{ message.body | words:8 | htmlToPlaintext}}</small>
+            <span class="pull-right">
+                <small>
+                    {{formatter.formatDateCalendar(message.created_at)}}
+                </small>
+            </span>
+        </a>
+    </div>
+    <div class="panel-collapse" bs-collapse-target>
+        <div class="panel-body" style="font-size: 14px" bindonce>
+            <span ng-bind-html="body"></span>
+            <div ng-if="!sent"> <br>
+                <div>
+                    <a href="javascript:void(0)" ng-click='markAsReadClick()' ng-if="message.read==0"><small>{{'MARK_AS_READ' | translate}}</small></a>
+                    <a href="javascript:void(0)" ng-click='markAsReadClick()' ng-if="message.read==1"><small>{{'MARK_AS_UNREAD' | translate}}</small></a>
+                    <span ng-if="message.kind == 'MSG'">
+                        &nbsp;-&nbsp;
+                        <a href="javascript:void(0)" ng-click="showReplyClick()"><small>{{'REPLY' | translate}}</small></a>
+                    </span>
+                </div>
+                <div class="col-md-6" ng-show = 'showReply' style="padding:10px">
+                    <textarea class="form-control b-sep" ng-model="message.replyText"></textarea>
+                    <button class="btn btn-sm btn-primary" ng-click="sendClick()">{{'SEND' | translate}}</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

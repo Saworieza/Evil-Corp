@@ -1,0 +1,24 @@
+<div style="padding-bottom:5px; padding-top:10px;" bindonce>
+    <div ng-class="zoom == 'true' ? '' : 'content-table-scroll'">
+        <table class="table table-striped" >
+            <thead>
+                <tr>
+                <td ng-repeat="col in data.cols"><strong>
+                        <span ng-class="col.type=='num' ? 'pull-right': ''" bo-text='col.title'></span>
+                    </strong></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in data.rows">
+                    <td ng-repeat="col in data.cols">
+                        <span ng-class="col.type=='num' ? 'pull-right' : ''" bo-text="row[$index]"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <small><a class="pull-dright" href="{{getExportUrl()}}">{{'DOWNLOAD_CSV' | translate }}</a></small>
+
+ </div>

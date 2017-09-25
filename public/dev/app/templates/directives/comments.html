@@ -1,0 +1,39 @@
+<div style="background-color: #F7F7F7;">
+    <a href="javascript:void(0)" ng-show='commentCount > comments.length' style="margin-left: 15px;" ng-click="loadAllComments()"><small>{{'VIEW_PREVIOUS_COMMENTS' | translate}}</small></a>
+    <ul class="comment-list" bindonce>
+        <li class='comment-item' ng-repeat='comment in comments'>
+            <img class="thumb-sm avatar pull-left" width='15' ng-src="{{getAvatar(comment.user.id)}}">
+                <span class='comment-username'>
+                    <span> <a href='javascript:void(0)' ng-click="peopleClick(comment.user.id)">{{comment.user.full_name}}</a></span>
+                    <small> {{formatter.formatDateCalendarUtc(comment.created_at)}}</small>
+                    <lkr-likes btn-class='btn btn-panel' class-name='Comment' object-id='comment.id' likes="comment.likes"></lkr-likes>
+                    <button ng-if='formatter.isMe(comment.user.id)'
+                            class="btn btn-panel"
+                            style="position: relative; top: -1px; left:-4px"
+                            data-template="partials/pop-delete-comment.html"
+                            data-container='body'
+                            data-animation="am-fade"
+                            bs-popover>
+                        <i class='fa fa-trash-o'></i>
+                    </button>
+                    </span>
+            <p class='comment-text' bo-html='comment.body' style="margin-bottom:0px"></p>
+            <div class="row" style="margin-top: 10px;margin-left: 30px;" data='comment.attachments' contentid = 'comment.id' lkr-file-viewer></div>
+        </li>
+    </ul>
+    <div class='col-md-12 comment-editor'>
+            <textarea style='border: 1px solid #ddd;'  id='comment_{{contentId}}' msd-elastic ng-model='body' class="form-control comment-textarea"
+                      rows="2" placeholder="{{'WRITE_A_COMMENT' | translate}}"  ng-focus="commentFocus()">
+             </textarea>
+            <div class="row" style="margin-bottom:2px; margin-top:10px" ng-show="showPost">
+                <div class='col-md-10 col-sm-6' >
+                    <div lkr-file-editor file-accept='*' data='newFiles' file-editor-id = 'contentId' style="width:90%; position: relative; left:-10px" ></div>
+                </div>
+                <div class="col-md-2 col-sm-6" style="position: relative; left: 15px;">
+                    <button class="btn btn-primary btn-sm pull-right" ng-click='commentPostClick()'>{{'POST' | translate}}</button>
+
+                </div>
+            </div>
+
+    </div>
+</div>

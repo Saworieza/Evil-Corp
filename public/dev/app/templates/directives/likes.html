@@ -1,0 +1,5 @@
+<button class="btn-panel" ng-class="iLike ? 'active' : ''" ng-click="onClick()"
+         bs-tooltip data-container="body" data-title="{{getLikeList()}}" html="true">
+    <i class="fa" ng-class="iLike ? 'fa-thumbs-up' : 'fa-thumbs-o-up'"></i>
+    <span class="icon-text">&nbsp;{{'LIKE' | translate}} </span><span ng-show='likes.length > 0'>&nbsp;{{likes.length}}</span>
+</button>

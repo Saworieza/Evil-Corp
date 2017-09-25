@@ -1,0 +1,95 @@
+<div class="row" style="background-color: white; padding: 10px" >
+    <div class="col-md-12" style="background-color: white" >
+        <h4>{{'SPACE' | translate}}</h4>
+        <form class="form-horizontal">
+           <div class="form-group">
+               <label class="col-md-2 control-label"><strong>{{'TITLE' | translate}}</strong></label>
+               <div class="col-md-6">
+                   <label class="col-md-8 control-label field-editor-value">
+                       {{currentSpace.title()}}
+                   </label>
+               </div>
+           </div>
+           <div class="form-group">
+               <label class="col-md-2 control-label"><strong>{{'DESCRIPTION' | translate}}</strong></label>
+               <div class="col-md-6">
+                   <label class="col-md-8 control-label field-editor-value">
+                       {{currentSpace.description()}}
+                   </label>
+               </div>
+           </div>
+           <div class="form-group">
+               <label class="col-md-2 control-label"><strong>{{'ACCESS' | translate}}</strong></label>
+               <div class="col-md-6">
+                   <label class="col-md-8 control-label field-editor-value">
+                       {{currentSpace.accessDesc()}}
+                   </label>
+               </div>
+           </div>
+           <div class="form-group">
+               <label class="col-md-2 control-label"><strong>{{'OPTIONS' | translate}}</strong></label>
+               <div class="col-md-6">
+                   <label class="col-md-8 control-label field-editor-value">
+                        {{currentSpace.featuresDesc()}}
+                   </label>
+               </div>
+           </div>
+            <br>
+            <div class="form-group">
+                <label class="col-md-2 control-label">&nbsp;</label>
+                <div class="col-md-6">
+                    <button class="btn btn-primary btn-sm" ng-click="editSpaceClick()"><i class="fa fa-pencil"></i> {{'EDIT' | translate}}</button>&nbsp;
+                    <button class="btn btn-danger btn-sm"
+                            data-template="partials/pop-delete-space.html"
+                            data-container='body'
+                            data-animation="am-fade"
+                            bs-popover>
+                        <i class="fa fa-trash"></i> {{'DELETE_SPACE' | translate}}
+                    </button>
+                </div>
+            </div>
+        </form>
+        <br>
+
+        <h4>{{'MEMBERS' | translate}}</h4>
+        <label class="col-md-1 control-label">&nbsp;</label>
+        <div class="col-md-6">
+            <table class="table table-striped table-users">
+                <thead>
+                    <tr>
+                        <td>&nbsp</td>
+                        <td><strong><a href="javascript:void(0)" ng-click="usersOrder='full_name'">{{'FULL_NAME' | translate}}</a></strong></td>
+                        <td><strong><a href="javascript:void(0)" ng-click="usersOrder='last_visit'">{{'LAST_VISIT' | translate}}</a></strong></td>
+                        <td><strong><a href="javascript:void(0)" ng-click="usersOrder='role'">{{'ROLE' | translate}}</a></strong></td>
+                        <td>
+                           &nbsp;
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="member in users | orderBy : usersOrder">
+                        <td style="vertical-align:middle;">
+                            <img width='30' ng-src="{{formatter.getAvatar(member.id)}}">
+                        </td>
+                        <td style="vertical-align:middle;">{{member.full_name}}</td>
+                        <td style="vertical-align:middle;">{{formatter.formatDateTime(member.last_visit)}}</td>
+                        <td style="vertical-align:middle;" ng-show='member.role==3'><span class='label label-success label-table'>{{'MODERATOR' | translate}}</span></td>
+                        <td style="vertical-align:middle;" ng-show='member.role==2'><span class='label label-info label-table'>{{'MEMBER' | translate}}</span></td>
+                        <td style="vertical-align:middle;" ng-show='member.role==1'><span class='label label-warning label-table'>{{'INVITED' | translate}}</span></td>
+                        <td style="vertical-align:middle;" ng-show='member.role==0'><span class='label label-danger label-table'>{{'SUSPENDED' | translate}}</span></td>
+                        <td>
+                            <button class="btn btn-table pull-right" ng-click="switchRoleClick(member.id)"><i class="fa fa-toggle-right fa-fw"></i> {{'SWITCH_STATE_ROLE' | translate}}</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <br>
+            <button class="btn btn-sm btn-white" ng-click="inviteClick()">{{'INVITE_NEW_USERS' | translate}}</button>
+            <br>
+            <br>
+
+        </div>
+    </div>
+
+</div>
+

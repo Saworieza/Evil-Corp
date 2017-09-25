@@ -1,0 +1,26 @@
+<div class="modal" tabindex="-1" role="dialog" bindonce>
+    <div class="modal-dialog space-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{'INVITE_PEOPLE' | translate}}</h4>
+                <div class="clearfix"></div>
+            </div>
+            <div class="modal-body content-table-scroll">
+                <table class="table table-striped ">
+                    <tr ng-repeat="user in usersToInvite">
+                        <td style="vertical-align:middle;">
+                            <input type="checkbox" ng-model="user.checked">
+                            &nbsp;
+                            <img width="30px" src="{{formatter.getAvatar(user.id)}}">
+                            &nbsp;
+                        {{user.full_name}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" ng-click="$hide(); inviteOkClick()">{{'OK' | translate}}</button>&nbsp;
+                <button type="button" class="btn btn-default" ng-click="$hide()">{{'CANCEL' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>

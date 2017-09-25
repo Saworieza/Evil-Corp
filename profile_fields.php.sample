@@ -1,0 +1,9 @@
+<?php
+return array (
+
+    ['name' => 'title', 'caption' => 'Title', 'type'=> 'string', 'table'=>true],
+    ['name' => 'data', 'caption' => 'Data', 'type'=> 'text', 'table'=>true],
+    ['name' => 'birth', 'caption' => 'Birth date', 'type'=> 'date'],
+    ['name' => 'category', 'caption' => 'Category', 'table'=>true, 'type'=> 'select', 'options'=>['one','two','three']],
+
+);
